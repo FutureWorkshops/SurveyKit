@@ -3,7 +3,9 @@ package com.quickbirdstudios.surveykit.backend.views.main_parts
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.graphics.ColorFilter
 import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.View
@@ -79,7 +81,7 @@ class Footer @JvmOverloads constructor(
     private fun Button.colorMainButtonEnabledState(enabled: Boolean, color: Int) {
         val drawable = context.resources.getDrawable(R.drawable.main_button_background, null)
         if (enabled) {
-            drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+            drawable.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
             (drawable as GradientDrawable).colorStroke(context.px(1f).toInt(), color)
             setTextColor(color)
         } else {

@@ -37,7 +37,7 @@ internal class TextQuestionView(
         )
 
     override fun isValidInput(): Boolean {
-        answerFormat.isValid?.let { isValidCheck ->
+        answerFormat.isValid.let { isValidCheck ->
             if (!isValidCheck(questionAnswerView.field.text.toString())) return false
         }
         return questionAnswerView.field.text.isNotBlank()
