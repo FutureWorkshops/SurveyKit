@@ -1,24 +1,21 @@
 @file:Suppress("SuspiciousCollectionReassignment")
 
-import com.quickbirdstudios.surveykit.configureLibraryPublication
-
 plugins {
     id("com.android.library")
     kotlin("android")
     id("org.jetbrains.kotlin.android.extensions")
-    id("com.jfrog.bintray")
-    `maven-publish`
 }
 
 androidExtensions { isExperimental = true }
 
 android {
-    compileSdkVersion(Project.Android.compileSdkVersion)
+    compileSdkVersion(29)
+    buildToolsVersion("29.0.3")
 
     defaultConfig {
-        minSdkVersion(Project.Android.minSdkVersion)
-        targetSdkVersion(Project.Android.targetSdkVersion)
-        testInstrumentationRunner = Project.Android.testInstrumentationRunner
+        minSdkVersion(21)
+        targetSdkVersion(29)
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     testOptions {
@@ -27,16 +24,14 @@ android {
 }
 
 dependencies {
-    implementation(Deps.Kotlin.stdlib)
-    api(Deps.Kotlin.coroutines)
-    implementation(Deps.Kotlin.androidCoroutines)
-    implementation(Deps.AndroidSupport.appCompat)
-    implementation(Deps.AndroidSupport.constraint)
-    implementation(Deps.AndroidSupport.recyclerView)
-    implementation(Deps.lottie)
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72")
+    api( "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0")
+    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0")
+    implementation("androidx.appcompat:appcompat:1.0.0")
+    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
+    implementation("androidx.recyclerview:recyclerview:1.0.0")
+    implementation("com.airbnb.android:lottie:3.0.7")
 
-    testImplementation(Deps.Test.jUnitJupiter)
-    testImplementation(Deps.Test.jUnitPlatform)
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+    testImplementation("org.junit.platform:junit-platform-runner:1.5.2")
 }
-
-project.configureLibraryPublication()
