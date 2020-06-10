@@ -6,9 +6,9 @@ import java.util.Date
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class StepResult(
+open class StepResult(
     override val id: StepIdentifier,
     override val startDate: Date,
-    override var endDate: Date = Date(),
-    var results: MutableList<QuestionResult> = mutableListOf()
+    override val endDate: Date = Date(),
+    val results: MutableList<QuestionResult> = mutableListOf()
 ) : Result, Parcelable

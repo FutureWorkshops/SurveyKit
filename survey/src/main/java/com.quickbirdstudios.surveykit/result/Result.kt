@@ -7,5 +7,5 @@ import java.util.Date
 interface Result : Parcelable {
     val id: Identifier
     val startDate: Date
-    var endDate: Date
+    val endDate: Date
 }
