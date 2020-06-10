@@ -68,7 +68,7 @@ private object ImageDiff : DiffUtil.ItemCallback<ImageWrapper>() {
         oldItem == newItem
 
     override fun areContentsTheSame(oldItem: ImageWrapper, newItem: ImageWrapper): Boolean =
-        oldItem == newItem
+        oldItem.image == newItem.image && oldItem.selected == newItem.selected
 }
 
 //endregion
