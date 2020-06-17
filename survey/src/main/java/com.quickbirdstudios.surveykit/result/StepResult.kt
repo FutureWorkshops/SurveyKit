@@ -10,5 +10,5 @@ open class StepResult(
     override val id: StepIdentifier,
     override val startDate: Date,
     override val endDate: Date = Date(),
-    val results: MutableList<QuestionResult> = mutableListOf()
+    open val results: MutableList<QuestionResult> = mutableListOf()
 ) : Result, Parcelable
