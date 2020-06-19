@@ -4,16 +4,18 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.core.widget.NestedScrollView
 import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.SurveyTheme
+import com.quickbirdstudios.surveykit.backend.helpers.extensions.topMargin
+import com.quickbirdstudios.surveykit.backend.helpers.extensions.verticalMargin
 
 class Content @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleRes: Int = 0
-) : NestedScrollView(context, attrs, defStyleRes), StyleablePart {
+) : FrameLayout(context, attrs, defStyleRes), StyleablePart {
 
     //region Member
 
@@ -33,6 +35,14 @@ class Content @JvmOverloads constructor(
 
     fun clear() {
         container.removeAllViews()
+    }
+
+    fun hideFooterContainer() {
+        footerContainer.visibility = View.GONE
+    }
+
+    fun changeContainerVerticalMargins(marginInDp: Int) {
+        container.verticalMargin(marginInDp)
     }
 
     //endregion
