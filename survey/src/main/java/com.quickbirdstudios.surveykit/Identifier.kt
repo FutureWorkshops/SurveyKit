@@ -12,6 +12,6 @@ data class TaskIdentifier(override val id: String = UUID.randomUUID().toString()
     Parcelable
 
 @Parcelize
-open class StepIdentifier(
+data class StepIdentifier(
     override val id: String = UUID.randomUUID().toString()
 ) : Identifier(id), Parcelable
