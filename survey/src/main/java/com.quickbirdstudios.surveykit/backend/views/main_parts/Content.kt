@@ -8,7 +8,6 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.SurveyTheme
-import com.quickbirdstudios.surveykit.backend.helpers.extensions.topMargin
 import com.quickbirdstudios.surveykit.backend.helpers.extensions.verticalMargin
 
 class Content @JvmOverloads constructor(
