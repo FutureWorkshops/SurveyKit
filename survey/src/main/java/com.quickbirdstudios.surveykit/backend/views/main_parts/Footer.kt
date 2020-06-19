@@ -3,7 +3,6 @@ package com.quickbirdstudios.surveykit.backend.views.main_parts
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.GradientDrawable
@@ -26,6 +25,9 @@ class Footer @JvmOverloads constructor(
 
     //region Public API
 
+    private var canContinueListener: CanContinueListener? = null
+    private var viewId: String = ""
+
     var themeColor = Color.RED
         set(newColor) {
             buttonContinue.colorMainButtonEnabledState(canContinue, newColor)
@@ -45,10 +47,16 @@ class Footer @JvmOverloads constructor(
         set(state) {
             buttonContinue.isEnabled = state
             buttonContinue.colorMainButtonEnabledState(state, themeColor)
+            canContinueListener?.onContinueChange(viewId, state)
         }
 
     fun setContinueButtonText(text: String) {
         buttonContinue.text = text
+    }
+
+    fun setCanContinueListener(viewId: String, canContinueListener: CanContinueListener) {
+        this.viewId = viewId
+        this.canContinueListener = canContinueListener
     }
 
     var onContinue: () -> Unit = {}
