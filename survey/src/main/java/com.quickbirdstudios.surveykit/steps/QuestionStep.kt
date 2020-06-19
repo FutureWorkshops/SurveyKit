@@ -41,7 +41,7 @@ import com.quickbirdstudios.surveykit.result.question_results.TimeQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.ValuePickerQuestionResult
 
 class QuestionStep(
-    val title: String,
+    val title: String?,
     val text: String,
     val nextButton: String = "Next",
     val answerFormat: AnswerFormat,
