@@ -50,7 +50,7 @@ class Content @JvmOverloads constructor(
 
     override fun style(surveyTheme: SurveyTheme) {
         (0 until container.childCount).forEach {
-            (container.getChildAt(it) as StyleablePart).style(surveyTheme)
+            (container.getChildAt(it) as? StyleablePart)?.style(surveyTheme)
         }
         footer.style(surveyTheme)
     }
