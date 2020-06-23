@@ -1,6 +1,7 @@
 package com.quickbirdstudios.surveykit
 
 import android.os.Parcelable
+import android.util.Patterns
 import androidx.annotation.DrawableRes
 import androidx.annotation.IntRange
 import java.util.Calendar
@@ -143,6 +144,5 @@ data class TextChoice(
 data class ImageChoice(@DrawableRes val resourceId: Int) : Parcelable
 
 private val defaultEmailValidation: (String) -> Boolean = { email ->
-    val pattern = Pattern.compile("""^(\w*)@(.+)\..+$""")
-    pattern.matcher(email).matches()
+    email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }
