@@ -15,6 +15,7 @@ import com.quickbirdstudios.surveykit.AnswerFormat.TextAnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.TimeAnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.ValuePickerAnswerFormat
 import com.quickbirdstudios.surveykit.StepIdentifier
+import com.quickbirdstudios.surveykit.backend.views.listeners.location.LocationFragmentListener
 import com.quickbirdstudios.surveykit.backend.views.questions.BooleanQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.DatePickerQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.EmailQuestionView
@@ -27,7 +28,6 @@ import com.quickbirdstudios.surveykit.backend.views.questions.TextQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.TimePickerQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.ValuePickerQuestionView
 import com.quickbirdstudios.surveykit.backend.views.step.QuestionView
-import com.quickbirdstudios.surveykit.location.LocationFragmentListener
 import com.quickbirdstudios.surveykit.backend.views.questions.LocationView
 import com.quickbirdstudios.surveykit.result.QuestionResult
 import com.quickbirdstudios.surveykit.result.StepResult
