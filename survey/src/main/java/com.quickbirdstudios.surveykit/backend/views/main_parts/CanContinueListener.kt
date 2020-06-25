@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2020 FutureWorkshops. All rights reserved.
- */
-
 package com.quickbirdstudios.surveykit.backend.views.main_parts
 
 interface CanContinueListener {
