@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2020 FutureWorkshops. All rights reserved.
- */
-
-package com.quickbirdstudios.surveykit.location
+package com.quickbirdstudios.surveykit.backend.views.question_parts
 
 import android.content.Context
 import android.util.AttributeSet
