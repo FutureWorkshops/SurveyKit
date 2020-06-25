@@ -8,8 +8,6 @@ interface LocationFragmentListener {
 
     fun clearMapView()
 
-    fun requestCurrentLocation()
-
-    fun requestAddressInformation(address: String)
+    fun checkLocationPermission()
 
 }

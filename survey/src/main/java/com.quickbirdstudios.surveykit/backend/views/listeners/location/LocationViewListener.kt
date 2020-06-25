@@ -1,8 +1,12 @@
 package com.quickbirdstudios.surveykit.backend.views.listeners.location
 
+import com.google.android.gms.maps.GoogleMap
+
 interface LocationViewListener {
 
-    fun onLocationResult(location: Location)
+    fun onMapReady(map: GoogleMap)
+
+    fun onLocationPermissionGranted()
 
 }
 
