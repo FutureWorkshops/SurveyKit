@@ -3,6 +3,10 @@ package com.quickbirdstudios.surveykit.backend.views.questions
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
+import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -58,16 +62,27 @@ internal class LocationView(
         locationPart = LocationPart(context)
 
         with(locationPart) {
-            // TODO: Add text change listener
-//            view.addressEt.doAfterTextChanged { editable ->
-//                editable?.toString()?.let { address ->
-//                    setMarkerFromAddress(address)
-//                }
-//            }
+            view.addressEt.setOnEditorActionListener { view, actionId, _ ->
+                var handled = false
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    val address = view.addressEt.text.toString()
+                    if (address.isNotEmpty()) setMarkerFromAddress(address)
+                    handled = true
+                }
+
+                hideKeyboard(view)
+                handled
+            }
 
             content.add(this)
             locationFragmentListener.setUpMapView(view.mapView, this@LocationView)
         }
+    }
+
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager =
+            view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -75,8 +90,11 @@ internal class LocationView(
         locationFragmentListener.checkLocationPermission()
 
         if (preselected?.isValidResult() == true) {
-            moveCameraAndAddMarker(preselected.latitude!!, preselected.longitude!!)
-            setResult(preselected.latitude, preselected.longitude, preselected.address!!)
+            moveCameraAndAddMarker(
+                preselected.latitude!!,
+                preselected.longitude!!,
+                preselected.address!!
+            )
         }
     }
 
@@ -99,36 +117,49 @@ internal class LocationView(
             if (task.isSuccessful) {
                 task.result?.let { lastKnownLocation ->
                     with(lastKnownLocation) {
-                        moveCameraAndAddMarker(latitude, longitude)
                         val address = getAddressFromLatLng(latitude, longitude)
-
-                        setResult(latitude, longitude, address)
+                        moveCameraAndAddMarker(latitude, longitude, address)
                     }
                 }
             }
         }
     }
 
-    private fun setResult(latitude: Double, longitude: Double, address: String) {
-        location = Location(latitude, longitude, address)
-        locationPart.view.addressEt.setText(location?.address)
-        locationPart.view.addressEt.setSelection(location?.address?.length ?: 0)
-    }
-
-    private fun moveCameraAndAddMarker(latitude: Double, longitude: Double) {
+    private fun moveCameraAndAddMarker(latitude: Double, longitude: Double, address: String?) {
+        val zoom = if (address == null) 5f else 15f
         map?.clear()
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 17f))
-        map?.addMarker(MarkerOptions().position(LatLng(latitude, longitude)))
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), zoom))
+
+        address?.let {
+            map?.addMarker(MarkerOptions().position(LatLng(latitude, longitude)))
+            location = Location(latitude, longitude, it)
+            locationPart.view.addressEt.setText(it)
+            locationPart.view.addressEt.setSelection(it.length)
+            footer.canContinue = isValidInput()
+        }
     }
 
-    private fun getAddressFromLatLng(latitude: Double, longitude: Double): String {
+    private fun getAddressFromLatLng(latitude: Double, longitude: Double): String? {
         val addresses = geocoder.getFromLocation(latitude, longitude, 1)
-        return addresses[0].getAddressLine(0)
+        return if (addresses.isNotEmpty()) {
+            addresses[0].getAddressLine(0)
+        } else {
+            Toast.makeText(context, "No results for this location", Toast.LENGTH_LONG).show()
+            null
+        }
     }
 
     private fun setMarkerFromAddress(address: String) {
         val addresses = geocoder.getFromLocationName(address, 1)
-        moveCameraAndAddMarker(addresses[0].latitude, addresses[0].longitude)
+        if (addresses.isNotEmpty()) {
+            moveCameraAndAddMarker(
+                addresses[0].latitude,
+                addresses[0].longitude,
+                addresses[0].getAddressLine(0)
+            )
+        } else {
+            Toast.makeText(context, "No results for this address", Toast.LENGTH_LONG).show()
+        }
     }
 
 }
