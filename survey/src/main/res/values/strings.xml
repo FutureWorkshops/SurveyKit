@@ -10,6 +10,8 @@
     <string name="cancel">Cancel</string>
     <string name="next">Next</string>
 
+    <string name="hint_address">Address</string>
+
 
     <!-- Example app strings -->
     <string name="intro_title">Welcome to the\nQuickBird Studios\nHealth Survey</string>
