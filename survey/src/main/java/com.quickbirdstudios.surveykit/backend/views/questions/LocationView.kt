@@ -155,7 +155,7 @@ internal class LocationView(
             moveCameraAndAddMarker(
                 addresses[0].latitude,
                 addresses[0].longitude,
-                addresses[0].getAddressLine(0)
+                address
             )
         } else {
             Toast.makeText(context, "No results for this address", Toast.LENGTH_LONG).show()
