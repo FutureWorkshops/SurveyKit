@@ -15,4 +15,8 @@ data class LocationResult(
     val latitude: Double?,
     val longitude: Double?,
     val address: String?
-) : QuestionResult, Parcelable
+) : QuestionResult, Parcelable {
+
+    fun isValidResult(): Boolean = latitude != null && longitude != null && address != null
+
+}

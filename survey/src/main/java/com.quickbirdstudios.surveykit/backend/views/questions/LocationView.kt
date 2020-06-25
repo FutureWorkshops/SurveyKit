@@ -40,15 +40,14 @@ internal class LocationView(
 
     override fun createResults(): QuestionResult {
         locationFragmentListener.clearMapView()
-        // TODO: Build result
         return LocationResult(
             stringIdentifier = location?.address ?: "",
             id = id,
             startDate = startDate,
             endDate = Date(),
-            latitude = null, // TODO: Change null
-            longitude = null, // TODO: Change null
-            address = null // TODO: Change null
+            latitude = location?.latitude,
+            longitude = location?.longitude,
+            address = location?.address
         )
     }
 
@@ -74,6 +73,11 @@ internal class LocationView(
     override fun onMapReady(map: GoogleMap) {
         this.map = map
         locationFragmentListener.checkLocationPermission()
+
+        if (preselected?.isValidResult() == true) {
+            moveCameraAndAddMarker(preselected.latitude!!, preselected.longitude!!)
+            setResult(preselected.latitude, preselected.longitude, preselected.address!!)
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -83,7 +87,8 @@ internal class LocationView(
             getDeviceLocation()
             true
         }
-        getDeviceLocation()
+
+        if (preselected?.isValidResult() == false || preselected == null) getDeviceLocation()
     }
 
     @SuppressLint("MissingPermission")
@@ -97,13 +102,17 @@ internal class LocationView(
                         moveCameraAndAddMarker(latitude, longitude)
                         val address = getAddressFromLatLng(latitude, longitude)
 
-                        location = Location(latitude, longitude, address)
-                        locationPart.view.addressEt.setText(location?.address)
-                        locationPart.view.addressEt.setSelection(location?.address?.length ?: 0)
+                        setResult(latitude, longitude, address)
                     }
                 }
             }
         }
+    }
+
+    private fun setResult(latitude: Double, longitude: Double, address: String) {
+        location = Location(latitude, longitude, address)
+        locationPart.view.addressEt.setText(location?.address)
+        locationPart.view.addressEt.setSelection(location?.address?.length ?: 0)
     }
 
     private fun moveCameraAndAddMarker(latitude: Double, longitude: Double) {
