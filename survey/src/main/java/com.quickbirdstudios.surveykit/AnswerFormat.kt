@@ -11,6 +11,8 @@ import kotlinx.android.parcel.Parcelize
 
 sealed class AnswerFormat {
 
+    object LocationAnswerFormat: AnswerFormat()
+
     data class IntegerAnswerFormat(
         val defaultValue: Int? = null,
         val hint: String = ""

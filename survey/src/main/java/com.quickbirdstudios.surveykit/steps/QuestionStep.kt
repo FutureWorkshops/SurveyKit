@@ -7,6 +7,7 @@ import com.quickbirdstudios.surveykit.AnswerFormat.DateAnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.EmailAnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.ImageSelectorFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.IntegerAnswerFormat
+import com.quickbirdstudios.surveykit.AnswerFormat.LocationAnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.MultipleChoiceAnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.ScaleAnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.SingleChoiceAnswerFormat
@@ -26,6 +27,8 @@ import com.quickbirdstudios.surveykit.backend.views.questions.TextQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.TimePickerQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.ValuePickerQuestionView
 import com.quickbirdstudios.surveykit.backend.views.step.QuestionView
+import com.quickbirdstudios.surveykit.location.LocationFragmentListener
+import com.quickbirdstudios.surveykit.backend.views.questions.LocationView
 import com.quickbirdstudios.surveykit.result.QuestionResult
 import com.quickbirdstudios.surveykit.result.StepResult
 import com.quickbirdstudios.surveykit.result.question_results.BooleanQuestionResult
@@ -39,12 +42,14 @@ import com.quickbirdstudios.surveykit.result.question_results.SingleChoiceQuesti
 import com.quickbirdstudios.surveykit.result.question_results.TextQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.TimeQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.ValuePickerQuestionResult
+import java.io.IOException
 
 class QuestionStep(
     val title: String?,
     val text: String,
     val nextButton: String = "Next",
     val answerFormat: AnswerFormat,
+    val locationFragmentListener: LocationFragmentListener? = null,
     override var isOptional: Boolean = false,
     override val id: StepIdentifier = StepIdentifier()
 ) : Step {
@@ -64,6 +69,7 @@ class QuestionStep(
             is TimeAnswerFormat -> createTimePickerQuestion(context, stepResult)
             is EmailAnswerFormat -> createEmailQuestion(context, stepResult)
             is ImageSelectorFormat -> createImageSelectorQuestion(context, stepResult)
+            is LocationAnswerFormat -> createLocationQuestion(context, stepResult)
         }
 
     //endregion
@@ -200,6 +206,19 @@ class QuestionStep(
             nextButtonText = nextButton,
             answerFormat = this.answerFormat as ImageSelectorFormat,
             preselected = stepResult.toSpecificResult<ImageSelectorResult>()?.answer
+        )
+
+    private fun createLocationQuestion(context: Context, stepResult: StepResult?) =
+        LocationView(
+            context = context,
+            id = id,
+            title = title ?: "",
+            text = text,
+            isOptional = isOptional,
+            nextButtonText = nextButton,
+            preselected = stepResult.toSpecificResult(),
+            locationFragmentListener = locationFragmentListener
+                ?: throw IOException("LocationFragmentListener shouldn't be null for creating a LocationView")
         )
 
     //endregion
