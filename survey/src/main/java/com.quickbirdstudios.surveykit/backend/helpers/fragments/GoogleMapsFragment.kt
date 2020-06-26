@@ -1,10 +1,10 @@
 package com.quickbirdstudios.surveykit.backend.helpers.fragments
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.GoogleMap
@@ -45,12 +45,8 @@ abstract class GoogleMapsFragment :
 
     override fun checkLocationPermission() {
         context?.let { safeContext ->
-            if (checkSelfPermission(safeContext, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
-                if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
-                    requestPermissions(arrayOf(ACCESS_FINE_LOCATION), LOCATION_PERMISSION_RESULT)
-                } else {
-                    showToast(R.string.location_permission_denied_permanently)
-                }
+            if (checkSelfPermission(safeContext, ACCESS_FINE_LOCATION) == PERMISSION_DENIED) {
+                requestPermissions(arrayOf(ACCESS_FINE_LOCATION), LOCATION_PERMISSION_RESULT)
             } else {
                 locationViewListener?.onLocationPermissionGranted()
             }
@@ -58,12 +54,6 @@ abstract class GoogleMapsFragment :
     }
 
     // endregion
-
-    private fun showToast(@StringRes stringId: Int) {
-        context?.let {
-            Toast.makeText(it, getString(stringId), Toast.LENGTH_LONG).show()
-        }
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -73,8 +63,11 @@ abstract class GoogleMapsFragment :
         if (requestCode == LOCATION_PERMISSION_RESULT) {
             if (grantResults[0] == PERMISSION_GRANTED) {
                 checkLocationPermission()
-            } else {
-                showToast(R.string.permission_not_granted)
+            } else if (!shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+                context?.let {
+                    val string = getString(R.string.location_permission_denied_permanently)
+                    Toast.makeText(it, string, Toast.LENGTH_LONG).show()
+                }
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
