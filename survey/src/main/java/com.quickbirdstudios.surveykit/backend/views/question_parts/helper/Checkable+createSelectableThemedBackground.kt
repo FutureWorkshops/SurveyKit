@@ -145,7 +145,11 @@ internal enum class BackgroundDrawable {
             Default -> R.drawable.input_border_bottom_border
             Pressed -> R.drawable.input_border_bottom_border_pressed
         }
+        Border.None -> when (this) {
+            Default -> R.drawable.input_border_none_border
+            Pressed -> R.drawable.input_border_none_border_pressed
+        }
     }
 
-    enum class Border { Both, Bottom }
+    enum class Border { Both, Bottom, None }
 }

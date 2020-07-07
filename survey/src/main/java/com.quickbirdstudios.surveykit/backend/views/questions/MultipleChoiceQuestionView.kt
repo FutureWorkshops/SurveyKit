@@ -44,6 +44,7 @@ internal class MultipleChoiceQuestionView(
         choicesContainer = content.add(MultipleChoicePart(context))
         choicesContainer.options = answerFormat.textChoices
         choicesContainer.onCheckedChangeListener = { _, _ -> footer.canContinue = isValidInput() }
+        choicesContainer.onTextChangedListener = { footer.canContinue = isValidInput() }
         val preselectedOptions = preselected ?: emptyList()
         val selectedOptions =
             if (preselectedOptions.isNotEmpty()) preselectedOptions
