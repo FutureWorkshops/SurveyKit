@@ -33,9 +33,7 @@ internal class MultipleChoiceQuestionView(
             id = id,
             startDate = startDate,
             answer = choicesContainer.selected,
-            stringIdentifier = choicesContainer.selected
-                .map { it.value }
-                .joinToString(",")
+            stringIdentifier = choicesContainer.selected.joinToString(",") { it.value }
         )
 
     override fun isValidInput(): Boolean = isOptional || choicesContainer.isOneSelected()

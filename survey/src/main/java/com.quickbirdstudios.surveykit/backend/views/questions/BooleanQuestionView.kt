@@ -61,13 +61,13 @@ internal class BooleanQuestionView(
 
     private fun AnswerFormat.BooleanAnswerFormat.Result?.toSelectedTextChoice(
         answerFormat: AnswerFormat.BooleanAnswerFormat
-    ): TextChoice? {
+    ): TextChoice.Normal? {
         val positiveStringId = answerFormat.positiveAnswerText
         val negativeStringId = answerFormat.negativeAnswerText
         return when (this) {
             AnswerFormat.BooleanAnswerFormat.Result.None -> null
-            AnswerFormat.BooleanAnswerFormat.Result.PositiveAnswer -> TextChoice(positiveStringId)
-            AnswerFormat.BooleanAnswerFormat.Result.NegativeAnswer -> TextChoice(negativeStringId)
+            AnswerFormat.BooleanAnswerFormat.Result.PositiveAnswer -> TextChoice.Normal(positiveStringId)
+            AnswerFormat.BooleanAnswerFormat.Result.NegativeAnswer -> TextChoice.Normal(negativeStringId)
             else -> null
         }
     }

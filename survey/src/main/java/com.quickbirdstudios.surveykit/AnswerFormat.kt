@@ -4,14 +4,13 @@ import android.os.Parcelable
 import android.util.Patterns
 import androidx.annotation.DrawableRes
 import androidx.annotation.IntRange
-import java.util.Calendar
-import java.util.Date as JavaDate
-import java.util.regex.Pattern
 import kotlinx.android.parcel.Parcelize
+import java.util.*
+import java.util.Date as JavaDate
 
 sealed class AnswerFormat {
 
-    object LocationAnswerFormat: AnswerFormat()
+    object LocationAnswerFormat : AnswerFormat()
 
     data class IntegerAnswerFormat(
         val defaultValue: Int? = null,
@@ -57,7 +56,7 @@ sealed class AnswerFormat {
             None, PositiveAnswer, NegativeAnswer;
         }
 
-        val textChoices = listOf(TextChoice(positiveAnswerText), TextChoice(negativeAnswerText))
+        val textChoices = listOf(TextChoice.Normal(positiveAnswerText), TextChoice.Normal(negativeAnswerText))
 
         fun toResult(id: String?) = when (id) {
             positiveAnswerText -> Result.PositiveAnswer
@@ -74,8 +73,8 @@ sealed class AnswerFormat {
             check(defaultValue == null || choices.contains(defaultValue)) {
                 throw IllegalStateException(
                     "${ValuePickerAnswerFormat::class.simpleName}:" +
-                        "${ValuePickerAnswerFormat::defaultValue.name}($defaultValue) " +
-                        "has to be part of " + ValuePickerAnswerFormat::choices.name + "($choices)"
+                            "${ValuePickerAnswerFormat::defaultValue.name}($defaultValue) " +
+                            "has to be part of " + ValuePickerAnswerFormat::choices.name + "($choices)"
                 )
             }
         }
@@ -136,11 +135,28 @@ sealed class AnswerFormat {
     }
 }
 
-@Parcelize // necessary because it is used in QuestionResults (Single and Multiple)
-data class TextChoice(
-    val text: String,
-    val value: String = text
-) : Parcelable
+sealed class TextChoice(
+    open val exclusive: Boolean,
+    open val value: String,
+    open val text: String
+): Parcelable {
+
+    @Parcelize
+    data class Normal(
+        override val text: String,
+        override val value: String = text,
+        override val exclusive: Boolean = false
+    ) : TextChoice(exclusive, value, text)
+
+    @Parcelize
+    data class Other(
+        override val text: String,
+        override val value: String,
+        override val exclusive: Boolean,
+        val detailText: String
+    ) : TextChoice(exclusive, value, text)
+
+}
 
 @Parcelize
 data class ImageChoice(@DrawableRes val resourceId: Int) : Parcelable
