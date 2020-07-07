@@ -70,6 +70,10 @@ internal class MultipleChoicePart @JvmOverloads constructor(
             }
         }
 
+    fun getEditTextSelection(): String? {
+        return findViewWithTag<EditText>(EDIT_TEXT_TAG)?.text.toString()
+    }
+
     fun isOneSelected(): Boolean = this.selectedChoices().isNotEmpty()
 
     var onCheckedChangeListener: (View, Boolean) -> Unit = { _, _ -> }

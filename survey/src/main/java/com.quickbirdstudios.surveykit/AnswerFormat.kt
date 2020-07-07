@@ -136,9 +136,9 @@ sealed class AnswerFormat {
 }
 
 sealed class TextChoice(
-    open val exclusive: Boolean,
+    open val text: String,
     open val value: String,
-    open val text: String
+    open val exclusive: Boolean
 ): Parcelable {
 
     @Parcelize
@@ -146,15 +146,16 @@ sealed class TextChoice(
         override val text: String,
         override val value: String = text,
         override val exclusive: Boolean = false
-    ) : TextChoice(exclusive, value, text)
+    ) : TextChoice(text, value, exclusive)
 
     @Parcelize
     data class Other(
         override val text: String,
         override val value: String,
         override val exclusive: Boolean,
-        val detailText: String
-    ) : TextChoice(exclusive, value, text)
+        val detailText: String,
+        var result: String = ""
+    ) : TextChoice(text, value, exclusive)
 
 }
 

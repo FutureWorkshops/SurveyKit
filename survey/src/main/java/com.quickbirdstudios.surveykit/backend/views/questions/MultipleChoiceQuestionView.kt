@@ -28,13 +28,18 @@ internal class MultipleChoiceQuestionView(
 
     //region Overrides
 
-    override fun createResults(): QuestionResult =
-        MultipleChoiceQuestionResult(
+    override fun createResults(): QuestionResult {
+        val selectedChoices = choicesContainer.selected
+        val other = selectedChoices.firstOrNull { it is TextChoice.Other } as? TextChoice.Other
+        other?.result = choicesContainer.getEditTextSelection() ?: ""
+
+        return MultipleChoiceQuestionResult(
             id = id,
             startDate = startDate,
-            answer = choicesContainer.selected,
+            answer = selectedChoices,
             stringIdentifier = choicesContainer.selected.joinToString(",") { it.value }
         )
+    }
 
     override fun isValidInput(): Boolean = isOptional || choicesContainer.isOneSelected()
 
