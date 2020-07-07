@@ -66,7 +66,12 @@ internal class MultipleChoicePart @JvmOverloads constructor(
         get() = selectedChoices()
         set(list) {
             list.forEach { selected ->
-                this.findViewWithTag<CheckBox>(options.indexOf(selected))?.isChecked = true
+                if (selected is TextChoice.Other) {
+                    this.findViewWithTag<EditText>(EDIT_TEXT_TAG)?.setText(selected.result)
+                } else {
+                    val index = options.indexOfFirst { it.text == selected.text }
+                    this.findViewWithTag<CheckBox>(index)?.isChecked = true
+                }
             }
         }
 
@@ -244,8 +249,13 @@ internal class MultipleChoicePart @JvmOverloads constructor(
             isClickable = true
             addRipple()
             setOnClickListener {
-                internalCheckedChangeListener(this, checkBox.isChecked)
-                checkBox.performClick()
+                if (editText.text.isNotEmpty()) {
+                    checkBox.performClick()
+                    internalCheckedChangeListener(this, checkBox.isChecked)
+                } else if (!editText.hasFocus()) {
+                    editText.requestFocus()
+                    showKeyboard()
+                }
             }
 
             val bottomPadding = context.px(context.resources.getDimension(R.dimen.text_field_vertical_padding)).toInt()

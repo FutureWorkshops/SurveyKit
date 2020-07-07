@@ -37,7 +37,7 @@ internal class MultipleChoiceQuestionView(
             id = id,
             startDate = startDate,
             answer = selectedChoices,
-            stringIdentifier = choicesContainer.selected.joinToString(",") { it.value }
+            stringIdentifier = selectedChoices.joinToString(",") { it.value }
         )
     }
 
