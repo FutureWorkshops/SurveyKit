@@ -42,14 +42,21 @@ internal class MultipleChoicePart @JvmOverloads constructor(
     @ColorInt
     var themeColor: Int = ContextCompat.getColor(context, R.color.cyan_normal)
         set(color) {
-            update(options)
+            fields.forEachIndexed { index, checkBox ->
+                val border = when (options[index]) {
+                    is TextChoice.Normal -> if (index == 0) Both else Bottom
+                    is TextChoice.Other -> None
+                }
+                checkBox.background = checkBox.createSelectableThemedBackground(context, border, color)
+            }
             field = color
         }
 
     @ColorInt
     var checkBoxTextColor: Int = ContextCompat.getColor(context, R.color.cyan_text)
         set(color) {
-            update(options)
+            fields.forEach { it.setTextColor(defaultColor) }
+            selectedCheckBoxes().forEach { it.setTextColor(color) }
             field = color
         }
 
