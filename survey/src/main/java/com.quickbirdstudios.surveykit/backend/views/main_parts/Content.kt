@@ -44,6 +44,13 @@ class Content @JvmOverloads constructor(
         container.verticalMargin(marginInDp)
     }
 
+    fun makeContainerMatchParent() {
+        container.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
+    }
+
     //endregion
 
     //region Overrides
