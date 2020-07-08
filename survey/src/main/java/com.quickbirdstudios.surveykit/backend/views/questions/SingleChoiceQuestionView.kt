@@ -54,6 +54,7 @@ internal class SingleChoiceQuestionView(
         choicesContainer = content.add(SingleChoicePart(context))
         choicesContainer.options = answerFormat.textChoices
         choicesContainer.onCheckedChangeListener = { _, _ -> footer.canContinue = isValidInput() }
+        choicesContainer.onTextChangedListener = { footer.canContinue = isValidInput() }
         choicesContainer.selected = preselected ?: answerFormat.defaultSelection
     }
 
