@@ -48,7 +48,10 @@ class Content @JvmOverloads constructor(
         container.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.MATCH_PARENT
-        )
+        ).apply {
+            val verticalMargin = resources.getDimension(R.dimen.question_vertical_padding).toInt()
+            setMargins(0, verticalMargin, 0, verticalMargin)
+        }
     }
 
     //endregion

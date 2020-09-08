@@ -3,6 +3,7 @@ package com.quickbirdstudios.surveykit.survey
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.appcompat.widget.Toolbar
 import com.quickbirdstudios.surveykit.FinishReason
 import com.quickbirdstudios.surveykit.SurveyTheme
 import com.quickbirdstudios.surveykit.Task
@@ -12,13 +13,14 @@ import com.quickbirdstudios.surveykit.backend.presenter.Presenter
 import com.quickbirdstudios.surveykit.backend.presenter.PresenterImpl
 import com.quickbirdstudios.surveykit.backend.result_gatherer.ResultGatherer
 import com.quickbirdstudios.surveykit.backend.result_gatherer.ResultGathererImpl
+import com.quickbirdstudios.surveykit.backend.views.main_parts.Header
 import com.quickbirdstudios.surveykit.result.StepResult
 import com.quickbirdstudios.surveykit.result.TaskResult
 import com.quickbirdstudios.surveykit.steps.Step
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 class SurveyView @JvmOverloads constructor(
     context: Context,
@@ -37,13 +39,18 @@ class SurveyView @JvmOverloads constructor(
 
     //region Public API
 
+    var setUpToolbar: (Toolbar) -> Unit = {
+
+    }
+
     override fun start(taskNavigator: TaskNavigator, surveyTheme: SurveyTheme) {
         this.taskNavigator = taskNavigator
         resultGatherer = ResultGathererImpl(taskNavigator.task)
         presenter = PresenterImpl(
             context = context,
             surveyTheme = surveyTheme,
-            viewContainer = this
+            viewContainer = this,
+            setUpToolbar = setUpToolbar
         )
         startSurvey()
     }
@@ -55,7 +62,8 @@ class SurveyView @JvmOverloads constructor(
         presenter = PresenterImpl(
             context = context,
             surveyTheme = surveyTheme,
-            viewContainer = this
+            viewContainer = this,
+            setUpToolbar = setUpToolbar
         )
         startSurvey()
     }

@@ -15,4 +15,30 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
+
+    <style name="Widget.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="titleTextAppearance">@style/ActionBarTextAppearance.Normal</item>
+        <item name="android:theme">@style/ThemeOverlay.ActionBar</item>
+    </style>
+
+    <style name="Widget.ActionBar.Normal">
+        <item name="android:background">@color/toolbar_background</item>
+    </style>
+
+    <style name="ActionBarTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/dark_baseline</item>
+        <!--        <item name="android:fontFamily">@font/rubik_font_family</item>-->
+    </style>
+
+    <style name="ActionBarTextAppearance.Normal">
+        <item name="android:textColor">@color/dark_baseline</item>
+    </style>
+
+    <style name="ThemeOverlay.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/dark_baseline</item>
+    </style>
+
 </resources>
