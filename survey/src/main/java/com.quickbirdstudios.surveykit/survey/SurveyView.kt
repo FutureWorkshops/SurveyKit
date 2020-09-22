@@ -38,7 +38,7 @@ class SurveyView @JvmOverloads constructor(
 
     //region Public API
 
-    var setUpToolbar: (Toolbar) -> Unit = {
+    var setUpToolbar: (toolbar: Toolbar, toolbarTitle: String?) -> Unit = { _, _ ->
 
     }
 

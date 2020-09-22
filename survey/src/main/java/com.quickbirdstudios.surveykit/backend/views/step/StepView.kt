@@ -10,6 +10,7 @@ import com.quickbirdstudios.surveykit.result.QuestionResult
 
 abstract class StepView(
     context: Context,
+    open val title: String?,
     override val id: StepIdentifier,
     override val isOptional: Boolean
 ) : FrameLayout(context), ViewActions, StyleablePart {

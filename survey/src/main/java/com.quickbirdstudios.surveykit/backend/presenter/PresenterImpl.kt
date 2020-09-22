@@ -19,7 +19,7 @@ internal class PresenterImpl(
     override val context: Context,
     override val viewContainer: FrameLayout,
     override val surveyTheme: SurveyTheme,
-    private val setUpToolbar: (Toolbar) -> Unit
+    private val setUpToolbar: (Toolbar, String?) -> Unit
 ) : Presenter {
 
     //region Members
@@ -111,7 +111,7 @@ internal class PresenterImpl(
         questionView.setupViews()
         questionView.onViewCreated()
         questionView.style(surveyTheme)
-        setUpToolbar(questionView.findViewById(R.id.toolbar))
+        setUpToolbar(questionView.findViewById(R.id.toolbar), questionView.title)
 
         when (transition) {
             Presenter.Transition.SlideFromRight -> viewAnimator.rightToLeft(

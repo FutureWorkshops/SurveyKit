@@ -20,10 +20,10 @@ abstract class QuestionView(
     context: Context,
     id: StepIdentifier,
     isOptional: Boolean,
-    private val title: String?,
+    override val title: String?,
     private val text: String?,
     private val nextButtonText: String
-) : StepView(context, id, isOptional), ViewActions {
+) : StepView(context, title, id, isOptional), ViewActions {
 
     //region Members
 
@@ -59,7 +59,6 @@ abstract class QuestionView(
 
     @CallSuper
     override fun setupViews() {
-        title?.let { InfoTextPart.title(context, it) }?.let(content::add)
         text?.let { InfoTextPart.info(context, it) }?.let(content::add)
 
         header.onBack = { onBackListener(createResults()) }
