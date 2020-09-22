@@ -16,6 +16,8 @@ import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.SurveyTheme
 import com.quickbirdstudios.surveykit.backend.helpers.extensions.colorStroke
 import com.quickbirdstudios.surveykit.backend.helpers.extensions.px
+import com.quickbirdstudios.surveykit.backend.helpers.extensions.toColorStateList
+
 
 class Footer @JvmOverloads constructor(
     context: Context,
@@ -92,6 +94,7 @@ class Footer @JvmOverloads constructor(
             drawable.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
             (drawable as GradientDrawable).colorStroke(context.px(1f).toInt(), color)
             setTextColor(color)
+            backgroundTintList = color.toColorStateList()
         } else {
             setTextColor(ContextCompat.getColor(context, R.color.disabled_grey))
         }
@@ -100,6 +103,7 @@ class Footer @JvmOverloads constructor(
 
     private fun Button.colorSkipButton(color: Int) {
         setTextColor(color)
+        backgroundTintList = color.toColorStateList()
     }
 
     // TODO this should probably not be done here

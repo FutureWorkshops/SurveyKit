@@ -6,7 +6,7 @@ import com.quickbirdstudios.surveykit.backend.views.main_parts.AbortDialogConfig
 // Todo rename to configuration for next major version
 data class SurveyTheme(
     @ColorInt val themeColorDark: Int,
-    @ColorInt val themeColor: Int,
+    @ColorInt var themeColor: Int,
     @ColorInt val textColor: Int,
     val abortDialogConfiguration: AbortDialogConfiguration? = null
 )

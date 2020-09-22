@@ -107,6 +107,7 @@ internal class PresenterImpl(
             width = LinearLayout.LayoutParams.MATCH_PARENT
             height = LinearLayout.LayoutParams.MATCH_PARENT
         }
+        questionView.setupSurveyTheme(surveyTheme)
         questionView.setupViews()
         questionView.onViewCreated()
         questionView.style(surveyTheme)

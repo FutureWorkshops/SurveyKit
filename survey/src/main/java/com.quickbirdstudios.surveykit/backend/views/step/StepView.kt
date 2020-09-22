@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.FrameLayout
 import com.quickbirdstudios.surveykit.FinishReason
 import com.quickbirdstudios.surveykit.StepIdentifier
+import com.quickbirdstudios.surveykit.SurveyTheme
 import com.quickbirdstudios.surveykit.backend.views.main_parts.StyleablePart
 import com.quickbirdstudios.surveykit.result.QuestionResult
 
@@ -37,4 +38,10 @@ abstract class StepView(
 
     abstract fun setupViews()
     open fun onViewCreated() = Unit
+
+    lateinit var surveyTheme: SurveyTheme
+
+    fun setupSurveyTheme(surveyTheme: SurveyTheme) {
+        this.surveyTheme = surveyTheme
+    }
 }
