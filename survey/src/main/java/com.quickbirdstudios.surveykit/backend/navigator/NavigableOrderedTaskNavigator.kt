@@ -13,6 +13,8 @@ internal class NavigableOrderedTaskNavigator(
     //region Members
 
     override var history: Stack<Step> = Stack()
+    override var currentStep: Step? = null
+        get() = peekHistory()
 
     //endregion
 

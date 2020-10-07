@@ -13,6 +13,8 @@ interface TaskNavigator {
 
     var history: Stack<Step>
 
+    var currentStep: Step?
+
     fun lastStepInHistory(): Step? = peekHistory()
 
     fun startStep(stepResult: StepResult?): Step?

@@ -12,6 +12,8 @@ internal class OrderedTaskNavigator(
     //region Public API
 
     override var history: Stack<Step> = Stack()
+    override var currentStep: Step? = null
+        get() = peekHistory()
 
     override fun startStep(stepResult: StepResult?): Step? {
         val previousStep = peekHistory()

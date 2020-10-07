@@ -42,7 +42,7 @@ class SurveyView @JvmOverloads constructor(
 
     }
 
-    override fun start(taskNavigator: TaskNavigator, surveyTheme: SurveyTheme) {
+    override fun start(taskNavigator: TaskNavigator, surveyTheme: SurveyTheme, isRestarting: Boolean) {
         this.taskNavigator = taskNavigator
         resultGatherer = ResultGathererImpl(taskNavigator.task)
         presenter = PresenterImpl(
@@ -51,11 +51,11 @@ class SurveyView @JvmOverloads constructor(
             viewContainer = this,
             setUpToolbar = setUpToolbar
         )
-        startSurvey()
+        startSurvey(isRestarting)
     }
 
     // TODO theme should be not set here but when creating the survey
-    override fun start(task: Task, surveyTheme: SurveyTheme) {
+    override fun start(task: Task, surveyTheme: SurveyTheme, isRestarting: Boolean) {
         taskNavigator = TaskNavigator(task = task)
         resultGatherer = ResultGathererImpl(task = task)
         presenter = PresenterImpl(
@@ -64,15 +64,19 @@ class SurveyView @JvmOverloads constructor(
             viewContainer = this,
             setUpToolbar = setUpToolbar
         )
-        startSurvey()
+        startSurvey(isRestarting)
     }
 
     //endregion
 
     //region Public API
 
-    private fun startSurvey() = launch {
-        var stepData = firstStep()
+    private fun startSurvey(isRestarting: Boolean) = launch {
+        var stepData = if (isRestarting) {
+            currentStep()
+        } else {
+            firstStep()
+        }
 
         while (true) {
             stepData = when (stepData) {
@@ -116,6 +120,16 @@ class SurveyView @JvmOverloads constructor(
     //endregion
 
     //region Private API
+    private suspend fun currentStep(): StepData {
+        val previousStep = taskNavigator.currentStep
+        val stepResult = resultGatherer.retrieve(previousStep!!.id)
+
+        val result = presenter(Presenter.Transition.None, previousStep, stepResult).storeResult()
+        return StepData(
+            step = previousStep,
+            action = result
+        )
+    }
 
     private suspend fun firstStep(): StepData {
         val previousStep = taskNavigator.lastStepInHistory()

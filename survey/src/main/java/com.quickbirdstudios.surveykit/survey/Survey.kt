@@ -12,7 +12,7 @@ internal interface Survey {
     var onStepResult: (Step?, StepResult?) -> Unit
     var onSurveyFinish: (TaskResult, FinishReason) -> Unit
 
-    fun start(taskNavigator: TaskNavigator, surveyTheme: SurveyTheme)
-    fun start(task: Task, surveyTheme: SurveyTheme)
+    fun start(taskNavigator: TaskNavigator, surveyTheme: SurveyTheme, isRestarting: Boolean)
+    fun start(task: Task, surveyTheme: SurveyTheme, isRestarting: Boolean)
     fun backPressed()
 }
