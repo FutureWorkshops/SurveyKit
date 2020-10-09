@@ -133,6 +133,10 @@ sealed class AnswerFormat {
             require(numberOfColumns in 1..5) { "Number of columns supported: 1-5" }
         }
     }
+
+    data class CurrencyAnswerFormat(
+        val currencyCode: String
+    ) : AnswerFormat()
 }
 
 sealed class TextChoice(

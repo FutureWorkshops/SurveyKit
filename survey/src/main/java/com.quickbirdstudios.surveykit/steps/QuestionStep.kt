@@ -2,21 +2,11 @@ package com.quickbirdstudios.surveykit.steps
 
 import android.content.Context
 import com.quickbirdstudios.surveykit.AnswerFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.BooleanAnswerFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.DateAnswerFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.EmailAnswerFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.ImageSelectorFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.IntegerAnswerFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.LocationAnswerFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.MultipleChoiceAnswerFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.ScaleAnswerFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.SingleChoiceAnswerFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.TextAnswerFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.TimeAnswerFormat
-import com.quickbirdstudios.surveykit.AnswerFormat.ValuePickerAnswerFormat
+import com.quickbirdstudios.surveykit.AnswerFormat.*
 import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.backend.views.listeners.location.LocationFragmentListener
 import com.quickbirdstudios.surveykit.backend.views.questions.BooleanQuestionView
+import com.quickbirdstudios.surveykit.backend.views.questions.CurrencyView
 import com.quickbirdstudios.surveykit.backend.views.questions.DatePickerQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.EmailQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.ImageSelectorQuestionView
@@ -70,6 +60,7 @@ class QuestionStep(
             is EmailAnswerFormat -> createEmailQuestion(context, stepResult)
             is ImageSelectorFormat -> createImageSelectorQuestion(context, stepResult)
             is LocationAnswerFormat -> createLocationQuestion(context, stepResult)
+            is CurrencyAnswerFormat -> createCurrencyQuestion(context, stepResult)
         }
 
     //endregion
@@ -219,6 +210,18 @@ class QuestionStep(
             preselected = stepResult.toSpecificResult(),
             locationFragmentListener = locationFragmentListener
                 ?: throw IOException("LocationFragmentListener shouldn't be null for creating a LocationView")
+        )
+
+    private fun createCurrencyQuestion(context: Context, stepResult: StepResult?) =
+        CurrencyView(
+            context = context,
+            id = id,
+            title = title ?: "",
+            text = text,
+            isOptional = isOptional,
+            nextButtonText = nextButton,
+            preselected = stepResult.toSpecificResult(),
+            currencyAnswerFormat = this.answerFormat as CurrencyAnswerFormat
         )
 
     //endregion
