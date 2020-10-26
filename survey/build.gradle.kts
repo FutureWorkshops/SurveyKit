@@ -4,6 +4,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     id("org.jetbrains.kotlin.android.extensions")
+    id("maven-publish")
 }
 
 androidExtensions { isExperimental = true }
@@ -20,6 +21,42 @@ android {
 
     testOptions {
         animationsDisabled = true
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components.getByName("release"))
+                groupId = project.property("project.bundleId")?.toString()
+                version = project.property("project.buildversion")?.toString()
+                artifactId = "surveykit"
+                pom {
+                    name.set("Mobile Workflow")
+                    url.set("http://fws.io")
+                    licenses {
+                        license {
+                            name.set("The Apache License, Version 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("futureworkshops")
+                            name.set("Future Workshops")
+                            email.set("info@futureworkshops.com")
+                        }
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                val deployPath = project.property("project.deployPath")?.toString()
+                url = uri(file("../${deployPath!!}"))
+            }
+        }
     }
 }
 
