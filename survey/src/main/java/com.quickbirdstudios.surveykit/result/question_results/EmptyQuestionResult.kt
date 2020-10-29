@@ -7,7 +7,7 @@ import java.util.Date
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class IntroQuestionResult(
+data class EmptyQuestionResult(
     override val id: Identifier,
     override val startDate: Date,
     override var endDate: Date = Date(),
