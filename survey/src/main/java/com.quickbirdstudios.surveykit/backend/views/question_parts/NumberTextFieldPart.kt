@@ -6,7 +6,7 @@ import android.view.View
 import androidx.annotation.StringRes
 import com.quickbirdstudios.surveykit.R
 
-internal class IntegerTextFieldPart(context: Context) : TextFieldPart(context) {
+internal class NumberTextFieldPart(context: Context) : TextFieldPart(context) {
 
     init {
         id = R.id.integerFieldPartField
@@ -15,7 +15,7 @@ internal class IntegerTextFieldPart(context: Context) : TextFieldPart(context) {
     }
 
     companion object {
-        fun withHint(context: Context, @StringRes hint: Int) = IntegerTextFieldPart(
+        fun withHint(context: Context, @StringRes hint: Int) = NumberTextFieldPart(
             context
         ).apply {
             field.hint = context.getString(hint)

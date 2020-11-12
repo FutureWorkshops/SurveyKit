@@ -10,7 +10,7 @@ import com.quickbirdstudios.surveykit.backend.views.questions.CurrencyView
 import com.quickbirdstudios.surveykit.backend.views.questions.DatePickerQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.EmailQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.ImageSelectorQuestionView
-import com.quickbirdstudios.surveykit.backend.views.questions.IntegerQuestionView
+import com.quickbirdstudios.surveykit.backend.views.questions.NumberQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.MultipleChoiceQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.ScaleQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.SingleChoiceQuestionView
@@ -25,7 +25,7 @@ import com.quickbirdstudios.surveykit.result.question_results.BooleanQuestionRes
 import com.quickbirdstudios.surveykit.result.question_results.DateQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.EmailQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.ImageSelectorResult
-import com.quickbirdstudios.surveykit.result.question_results.IntegerQuestionResult
+import com.quickbirdstudios.surveykit.result.question_results.NumberQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.MultipleChoiceQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.ScaleQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.SingleChoiceQuestionResult
@@ -52,7 +52,7 @@ class QuestionStep(
             is SingleChoiceAnswerFormat -> createSingleChoiceQuestion(context, stepResult)
             is MultipleChoiceAnswerFormat -> createMultipleChoiceQuestion(context, stepResult)
             is ScaleAnswerFormat -> createScaleQuestion(context, stepResult)
-            is IntegerAnswerFormat -> createIntegerQuestion(context, stepResult)
+            is NumberAnswerFormat -> createNumberQuestion(context, stepResult)
             is BooleanAnswerFormat -> createBooleanQuestion(context, stepResult)
             is ValuePickerAnswerFormat -> createValuePickerQuestion(context, stepResult)
             is DateAnswerFormat -> createDatePickerQuestion(context, stepResult)
@@ -115,16 +115,16 @@ class QuestionStep(
             preselected = stepResult.toSpecificResult<ScaleQuestionResult>()?.answer
         )
 
-    private fun createIntegerQuestion(context: Context, stepResult: StepResult?) =
-        IntegerQuestionView(
+    private fun createNumberQuestion(context: Context, stepResult: StepResult?) =
+        NumberQuestionView(
             context = context,
             id = id,
             title = title,
             text = text,
             isOptional = isOptional,
             nextButtonText = nextButton,
-            answerFormat = this.answerFormat as IntegerAnswerFormat,
-            preselected = stepResult.toSpecificResult<IntegerQuestionResult>()?.answer
+            answerFormat = this.answerFormat as NumberAnswerFormat,
+            preselected = stepResult.toSpecificResult<NumberQuestionResult>()?.answer
         )
 
     private fun createBooleanQuestion(context: Context, stepResult: StepResult?) =

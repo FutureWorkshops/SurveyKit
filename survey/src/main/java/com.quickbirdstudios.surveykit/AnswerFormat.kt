@@ -12,7 +12,7 @@ sealed class AnswerFormat {
 
     object LocationAnswerFormat : AnswerFormat()
 
-    data class IntegerAnswerFormat(
+    data class NumberAnswerFormat(
         val defaultValue: Int? = null,
         val hint: String = ""
     ) : AnswerFormat()

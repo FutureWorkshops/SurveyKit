@@ -6,10 +6,10 @@ import java.util.Date
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class IntegerQuestionResult(
+data class NumberQuestionResult(
     override val id: Identifier,
     override val startDate: Date,
     override var endDate: Date = Date(),
     override val stringIdentifier: String,
-    val answer: Int?
+    val answer: Long?
 ) : QuestionResult
