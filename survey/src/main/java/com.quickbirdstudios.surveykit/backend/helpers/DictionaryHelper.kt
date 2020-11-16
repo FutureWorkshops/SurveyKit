@@ -19,6 +19,10 @@ class DictionaryHelper @Inject constructor(
         fun getTranslation(from: String): String {
             return selectedProjectLocale?.translations?.firstOrNull { it.from.equals(from, true) }?.to ?: from
         }
+
+        fun getTranslationOrNull(from: String?): String? {
+            return if (from == null) null else getTranslation(from)
+        }
     }
 
     fun handleLocalisation(supportedLanguages: MutableList<ProjectLocale>) {
@@ -39,8 +43,6 @@ class DictionaryHelper @Inject constructor(
             supportedLanguages.firstOrNull { it.languageId.equals(locale, true) }
                 ?: supportedLanguages.first { it.languageId.substring(0, 2).equals(locale.substring(0, 2), true) }
         }
-
-        println("POLLO - PROJECT LOCALE: $selectedProjectLocale")
     }
 
 }
