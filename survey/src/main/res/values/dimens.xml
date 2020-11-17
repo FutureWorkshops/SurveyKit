@@ -9,8 +9,6 @@
     <dimen name="question_info_text_text_size">16sp</dimen>
     <dimen name="question_text_size">28sp</dimen>
 
-    <dimen name="content_vertical_margin">20dp</dimen>
-
     <dimen name="footer_vertical_margin">20dp</dimen>
 
     <dimen name="button_padding_horizontal">40dp</dimen>
