@@ -8,5 +8,6 @@ import com.quickbirdstudios.surveykit.result.StepResult
 interface Step {
     val isOptional: Boolean
     val id: StepIdentifier
+    val uuid: String
     fun createView(context: Context, stepResult: StepResult?): StepView
 }

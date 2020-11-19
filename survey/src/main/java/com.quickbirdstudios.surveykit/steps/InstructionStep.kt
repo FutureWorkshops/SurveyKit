@@ -10,7 +10,8 @@ open class InstructionStep(
     private val text: String? = null,
     private val buttonText: String = "Start",
     override var isOptional: Boolean = false,
-    override val id: StepIdentifier = StepIdentifier()
+    override val id: StepIdentifier = StepIdentifier(),
+    override val uuid: String
 ) : Step {
     override fun createView(context: Context, stepResult: StepResult?) =
         IntroQuestionView(

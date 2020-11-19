@@ -15,7 +15,8 @@ class CompletionStep(
     private val lottieAnimation: LottieAnimation? = null,
     private val repeatCount: Int = 0,
     override val isOptional: Boolean = false,
-    override val id: StepIdentifier = StepIdentifier()
+    override val id: StepIdentifier = StepIdentifier(),
+    override val uuid: String
 ) : Step {
     override fun createView(context: Context, stepResult: StepResult?): StepView =
         FinishQuestionView(

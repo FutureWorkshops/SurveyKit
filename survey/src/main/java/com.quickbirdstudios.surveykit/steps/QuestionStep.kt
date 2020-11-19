@@ -42,7 +42,8 @@ class QuestionStep(
     val answerFormat: AnswerFormat,
     val locationFragmentListener: LocationFragmentListener? = null,
     override var isOptional: Boolean = false,
-    override val id: StepIdentifier = StepIdentifier()
+    override val id: StepIdentifier = StepIdentifier(),
+    override val uuid: String
 ) : Step {
 
     //region Public API
