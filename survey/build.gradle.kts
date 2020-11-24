@@ -4,6 +4,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     id("org.jetbrains.kotlin.android.extensions")
+    id("kotlin-kapt")
     id("maven-publish")
 }
 
@@ -74,6 +75,8 @@ dependencies {
     api("net.openid:appauth:0.7.1")
     api("com.google.code.gson:gson:2.8.6")
     implementation("javax.inject:javax.inject:1")
+    implementation("com.github.bumptech.glide:glide:4.11.0")
+    kapt("com.github.bumptech.glide:compiler:4.11.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
     testImplementation("org.junit.platform:junit-platform-runner:1.5.2")
