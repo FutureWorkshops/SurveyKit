@@ -4,6 +4,7 @@ import android.content.Context
 import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.backend.views.questions.IntroQuestionView
 import com.quickbirdstudios.surveykit.result.StepResult
+import com.quickbirdstudios.surveykit.services.MobileWorkflowServices
 
 open class InstructionStep(
     private val title: String? = null,
@@ -13,7 +14,8 @@ open class InstructionStep(
     override val id: StepIdentifier = StepIdentifier(),
     override val uuid: String
 ) : Step {
-    override fun createView(context: Context, stepResult: StepResult?) =
+
+    override fun createView(context: Context, stepResult: StepResult?, mobileWorkflowServices: MobileWorkflowServices) =
         IntroQuestionView(
             context = context,
             id = id,

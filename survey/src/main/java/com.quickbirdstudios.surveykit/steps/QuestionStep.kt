@@ -33,6 +33,7 @@ import com.quickbirdstudios.surveykit.result.question_results.SingleChoiceQuesti
 import com.quickbirdstudios.surveykit.result.question_results.TextQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.TimeQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.ValuePickerQuestionResult
+import com.quickbirdstudios.surveykit.services.MobileWorkflowServices
 import java.io.IOException
 
 class QuestionStep(
@@ -48,7 +49,7 @@ class QuestionStep(
 
     //region Public API
 
-    override fun createView(context: Context, stepResult: StepResult?): QuestionView =
+    override fun createView(context: Context, stepResult: StepResult?, mobileWorkflowServices: MobileWorkflowServices): QuestionView =
         when (answerFormat) {
             is TextAnswerFormat -> createTextQuestion(context, stepResult)
             is SingleChoiceAnswerFormat -> createSingleChoiceQuestion(context, stepResult)

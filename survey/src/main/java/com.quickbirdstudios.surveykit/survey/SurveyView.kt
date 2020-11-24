@@ -15,6 +15,7 @@ import com.quickbirdstudios.surveykit.backend.result_gatherer.ResultGatherer
 import com.quickbirdstudios.surveykit.backend.result_gatherer.ResultGathererImpl
 import com.quickbirdstudios.surveykit.result.StepResult
 import com.quickbirdstudios.surveykit.result.TaskResult
+import com.quickbirdstudios.surveykit.services.MobileWorkflowServices
 import com.quickbirdstudios.surveykit.steps.Step
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +34,7 @@ class SurveyView @JvmOverloads constructor(
     private lateinit var taskNavigator: TaskNavigator
     private lateinit var resultGatherer: ResultGatherer
     private lateinit var presenter: Presenter
+    private val mobileWorkflowServices = MobileWorkflowServices()
 
     //endregion
 
@@ -49,7 +51,8 @@ class SurveyView @JvmOverloads constructor(
             context = context,
             surveyTheme = surveyTheme,
             viewContainer = this,
-            setUpToolbar = setUpToolbar
+            setUpToolbar = setUpToolbar,
+            mobileWorkflowServices = mobileWorkflowServices
         )
         startSurvey(isRestarting)
     }
@@ -62,7 +65,8 @@ class SurveyView @JvmOverloads constructor(
             context = context,
             surveyTheme = surveyTheme,
             viewContainer = this,
-            setUpToolbar = setUpToolbar
+            setUpToolbar = setUpToolbar,
+            mobileWorkflowServices = mobileWorkflowServices
         )
         startSurvey(isRestarting)
     }

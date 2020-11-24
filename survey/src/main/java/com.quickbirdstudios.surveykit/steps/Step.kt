@@ -4,10 +4,11 @@ import android.content.Context
 import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.backend.views.step.StepView
 import com.quickbirdstudios.surveykit.result.StepResult
+import com.quickbirdstudios.surveykit.services.MobileWorkflowServices
 
 interface Step {
     val isOptional: Boolean
     val id: StepIdentifier
     val uuid: String
-    fun createView(context: Context, stepResult: StepResult?): StepView
+    fun createView(context: Context, stepResult: StepResult?, mobileWorkflowServices: MobileWorkflowServices): StepView
 }

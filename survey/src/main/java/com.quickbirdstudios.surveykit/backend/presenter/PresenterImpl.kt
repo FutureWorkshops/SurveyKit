@@ -10,6 +10,7 @@ import com.quickbirdstudios.surveykit.SurveyTheme
 import com.quickbirdstudios.surveykit.backend.presenter.animations.ViewAnimator
 import com.quickbirdstudios.surveykit.backend.views.step.StepView
 import com.quickbirdstudios.surveykit.result.StepResult
+import com.quickbirdstudios.surveykit.services.MobileWorkflowServices
 import com.quickbirdstudios.surveykit.steps.Step
 import java.util.*
 import kotlin.coroutines.resume
@@ -19,6 +20,7 @@ internal class PresenterImpl(
     override val context: Context,
     override val viewContainer: FrameLayout,
     override val surveyTheme: SurveyTheme,
+    override val mobileWorkflowServices: MobileWorkflowServices,
     private val setUpToolbar: (Toolbar, String?) -> Unit
 ) : Presenter {
 
@@ -37,7 +39,7 @@ internal class PresenterImpl(
         step: Step,
         stepResult: StepResult?
     ): NextAction {
-        val viewToPresent = step.createView(context, stepResult)
+        val viewToPresent = step.createView(context, stepResult, mobileWorkflowServices)
         return showAndWaitForResult(step.id, viewToPresent, transition)
     }
 

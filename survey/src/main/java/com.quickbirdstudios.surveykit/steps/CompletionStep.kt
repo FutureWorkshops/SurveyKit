@@ -7,6 +7,7 @@ import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.backend.views.questions.FinishQuestionView
 import com.quickbirdstudios.surveykit.backend.views.step.StepView
 import com.quickbirdstudios.surveykit.result.StepResult
+import com.quickbirdstudios.surveykit.services.MobileWorkflowServices
 
 class CompletionStep(
     private val title: String? = null,
@@ -18,7 +19,8 @@ class CompletionStep(
     override val id: StepIdentifier = StepIdentifier(),
     override val uuid: String
 ) : Step {
-    override fun createView(context: Context, stepResult: StepResult?): StepView =
+
+    override fun createView(context: Context, stepResult: StepResult?, mobileWorkflowServices: MobileWorkflowServices): StepView =
         FinishQuestionView(
             context = context,
             title = title,
