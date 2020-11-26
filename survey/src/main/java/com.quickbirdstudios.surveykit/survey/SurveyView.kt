@@ -6,7 +6,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.Toolbar
 import com.quickbirdstudios.surveykit.FinishReason
 import com.quickbirdstudios.surveykit.SurveyTheme
-import com.quickbirdstudios.surveykit.Task
+import com.quickbirdstudios.surveykit.backend.helpers.LocalizationService
 import com.quickbirdstudios.surveykit.backend.navigator.TaskNavigator
 import com.quickbirdstudios.surveykit.backend.presenter.NextAction
 import com.quickbirdstudios.surveykit.backend.presenter.Presenter
@@ -16,6 +16,7 @@ import com.quickbirdstudios.surveykit.backend.result_gatherer.ResultGathererImpl
 import com.quickbirdstudios.surveykit.result.StepResult
 import com.quickbirdstudios.surveykit.result.TaskResult
 import com.quickbirdstudios.surveykit.services.MobileWorkflowServices
+import com.quickbirdstudios.surveykit.services.image_loader.ImageLoaderService
 import com.quickbirdstudios.surveykit.steps.Step
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +35,7 @@ class SurveyView @JvmOverloads constructor(
     private lateinit var taskNavigator: TaskNavigator
     private lateinit var resultGatherer: ResultGatherer
     private lateinit var presenter: Presenter
-    private val mobileWorkflowServices = MobileWorkflowServices(context)
+    private lateinit var mobileWorkflowServices: MobileWorkflowServices
 
     //endregion
 
@@ -44,23 +45,17 @@ class SurveyView @JvmOverloads constructor(
 
     }
 
-    override fun start(taskNavigator: TaskNavigator, surveyTheme: SurveyTheme, isRestarting: Boolean) {
+    override fun start(
+        taskNavigator: TaskNavigator,
+        surveyTheme: SurveyTheme,
+        isRestarting: Boolean,
+        imageLoaderService: ImageLoaderService,
+        localizationService: LocalizationService
+    ) {
         this.taskNavigator = taskNavigator
         resultGatherer = ResultGathererImpl(taskNavigator.task)
-        presenter = PresenterImpl(
-            context = context,
-            surveyTheme = surveyTheme,
-            viewContainer = this,
-            setUpToolbar = setUpToolbar,
-            mobileWorkflowServices = mobileWorkflowServices
-        )
-        startSurvey(isRestarting)
-    }
+        this.mobileWorkflowServices = MobileWorkflowServices(imageLoaderService, localizationService)
 
-    // TODO theme should be not set here but when creating the survey
-    override fun start(task: Task, surveyTheme: SurveyTheme, isRestarting: Boolean) {
-        taskNavigator = TaskNavigator(task = task)
-        resultGatherer = ResultGathererImpl(task = task)
         presenter = PresenterImpl(
             context = context,
             surveyTheme = surveyTheme,

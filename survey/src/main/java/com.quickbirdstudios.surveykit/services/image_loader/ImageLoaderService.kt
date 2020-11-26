@@ -7,8 +7,9 @@ package com.quickbirdstudios.surveykit.services.image_loader
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import java.io.File
+import javax.inject.Inject
 
-class ImageLoaderService {
+class ImageLoaderService @Inject constructor() {
 
     fun loadImageFromUrl(url: String, imageView: ImageView) {
         Glide

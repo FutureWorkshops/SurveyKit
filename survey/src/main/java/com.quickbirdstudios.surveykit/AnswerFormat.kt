@@ -4,6 +4,7 @@ import android.os.Parcelable
 import android.util.Patterns
 import androidx.annotation.DrawableRes
 import androidx.annotation.IntRange
+import com.quickbirdstudios.surveykit.backend.helpers.LocalizationService
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 import java.util.Date as JavaDate
@@ -143,7 +144,17 @@ sealed class TextChoice(
     open val text: String,
     open val value: String,
     open val exclusive: Boolean
-): Parcelable {
+) : Parcelable {
+
+    fun translate(localizationService: LocalizationService): TextChoice = when (this) {
+        is Normal -> this.copy(
+            text = localizationService.getTranslation(this.text)
+        )
+        is Other -> this.copy(
+            text = localizationService.getTranslation(this.text),
+            detailText = localizationService.getTranslation(this.detailText)
+        )
+    }
 
     @Parcelize
     data class Normal(

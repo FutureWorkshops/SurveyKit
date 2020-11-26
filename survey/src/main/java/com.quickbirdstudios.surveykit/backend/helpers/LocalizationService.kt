@@ -13,16 +13,14 @@ class LocalizationService @Inject constructor(
     private val context: Context
 ) {
 
-    companion object {
-        var selectedProjectLocale: ProjectLocale? = null
+    private var selectedProjectLocale: ProjectLocale? = null
 
-        fun getTranslation(from: String): String {
-            return selectedProjectLocale?.translations?.firstOrNull { it.from.equals(from, true) }?.to ?: from
-        }
+    fun getTranslation(from: String): String {
+        return selectedProjectLocale?.translations?.firstOrNull { it.from.equals(from, true) }?.to ?: from
+    }
 
-        fun getTranslationOrNull(from: String?): String? {
-            return if (from == null) null else getTranslation(from)
-        }
+    fun getTranslationOrNull(from: String?): String? {
+        return if (from == null) null else getTranslation(from)
     }
 
     fun handleLocalisation(supportedLanguages: MutableList<ProjectLocale>) {
