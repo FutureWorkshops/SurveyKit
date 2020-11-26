@@ -4,7 +4,7 @@ import android.content.Context
 import com.quickbirdstudios.surveykit.AnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.*
 import com.quickbirdstudios.surveykit.StepIdentifier
-import com.quickbirdstudios.surveykit.backend.helpers.DictionaryHelper
+import com.quickbirdstudios.surveykit.backend.helpers.LocalizationService
 import com.quickbirdstudios.surveykit.backend.views.listeners.location.LocationFragmentListener
 import com.quickbirdstudios.surveykit.backend.views.questions.BooleanQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.CurrencyView
@@ -39,7 +39,7 @@ import java.io.IOException
 class QuestionStep(
     val title: String?,
     val text: String,
-    val nextButton: String = DictionaryHelper.getTranslation("Next"),
+    val nextButton: String = LocalizationService.getTranslation("Next"),
     val answerFormat: AnswerFormat,
     val locationFragmentListener: LocationFragmentListener? = null,
     override var isOptional: Boolean = false,

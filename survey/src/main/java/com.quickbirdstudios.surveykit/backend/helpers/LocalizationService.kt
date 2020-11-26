@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DictionaryHelper @Inject constructor(
+class LocalizationService @Inject constructor(
     private val context: Context
 ) {
 

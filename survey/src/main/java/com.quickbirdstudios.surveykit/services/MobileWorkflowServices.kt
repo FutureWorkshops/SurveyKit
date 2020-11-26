@@ -5,7 +5,7 @@
 package com.quickbirdstudios.surveykit.services
 
 import android.content.Context
-import com.quickbirdstudios.surveykit.backend.helpers.DictionaryHelper
+import com.quickbirdstudios.surveykit.backend.helpers.LocalizationService
 import com.quickbirdstudios.surveykit.services.image_loader.ImageLoaderService
 
 class MobileWorkflowServices(
@@ -14,6 +14,6 @@ class MobileWorkflowServices(
 
     val imageLoaderService = ImageLoaderService()
 
-    val dictionaryHelper = DictionaryHelper(context)
+    val dictionaryHelper = LocalizationService(context)
 
 }
