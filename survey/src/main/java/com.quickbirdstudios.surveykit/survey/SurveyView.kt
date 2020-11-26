@@ -34,7 +34,7 @@ class SurveyView @JvmOverloads constructor(
     private lateinit var taskNavigator: TaskNavigator
     private lateinit var resultGatherer: ResultGatherer
     private lateinit var presenter: Presenter
-    private val mobileWorkflowServices = MobileWorkflowServices()
+    private val mobileWorkflowServices = MobileWorkflowServices(context)
 
     //endregion
 
