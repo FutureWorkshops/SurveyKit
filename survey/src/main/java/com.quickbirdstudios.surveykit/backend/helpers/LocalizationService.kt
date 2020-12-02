@@ -27,19 +27,23 @@ class LocalizationService @Inject constructor(
         val hasEnglish = supportedLanguages.any { projectLocale ->
             projectLocale.languageId.substring(0, 2).equals("en", true)
         }
-        if (!hasEnglish) supportedLanguages.add(ProjectLocale("en", listOf()))
+        if (!hasEnglish) supportedLanguages.add(0, ProjectLocale("en", listOf()))
 
         val locales = context.resources.configuration.locales
         val languageIdList = supportedLanguages.map { it.languageId }.toTypedArray()
         val matchLocale = locales.getFirstMatch(languageIdList)
 
         selectedProjectLocale = if (matchLocale == null) {
+            // Locales list is empty, just take first language (English)
             supportedLanguages.first()
         } else {
-            // Exact or Fuzzy match
             val locale = matchLocale.toString()
-            supportedLanguages.firstOrNull { it.languageId.equals(locale, true) }
-                ?: supportedLanguages.first { it.languageId.substring(0, 2).equals(locale.substring(0, 2), true) }
+            supportedLanguages.firstOrNull {
+                it.languageId.equals(locale, true)  // Exact match
+            } ?: supportedLanguages.firstOrNull {
+                it.languageId.substring(0, 2).equals(locale.substring(0, 2), true) // Fuzzy match
+            }
+            ?: supportedLanguages.first() // No match - just take first language (English)
         }
     }
 
