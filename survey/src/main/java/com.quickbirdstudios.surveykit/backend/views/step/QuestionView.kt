@@ -14,7 +14,7 @@ import com.quickbirdstudios.surveykit.backend.views.main_parts.Footer
 import com.quickbirdstudios.surveykit.backend.views.main_parts.Header
 import com.quickbirdstudios.surveykit.backend.views.question_parts.InfoTextPart
 import com.quickbirdstudios.surveykit.result.QuestionResult
-import java.util.Date
+import java.util.*
 
 abstract class QuestionView(
     context: Context,
@@ -22,7 +22,8 @@ abstract class QuestionView(
     isOptional: Boolean,
     override val title: String?,
     private val text: String?,
-    private val nextButtonText: String
+    private val nextButtonText: String,
+    private val buttonOrientation: ButtonOrientation = ButtonOrientation.CENTER
 ) : StepView(context, title, id, isOptional), ViewActions {
 
     //region Members
@@ -77,6 +78,8 @@ abstract class QuestionView(
                 onCloseListener(createResults(), FinishReason.Discarded)
             }
         }
+
+        footer.setButtonsGravity(buttonOrientation.gravity)
     }
 
     override fun onViewCreated() {

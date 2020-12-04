@@ -3,19 +3,14 @@ package com.quickbirdstudios.surveykit.backend.views.main_parts
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
-import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.SurveyTheme
-import com.quickbirdstudios.surveykit.backend.helpers.extensions.colorStroke
-import com.quickbirdstudios.surveykit.backend.helpers.extensions.px
 import com.quickbirdstudios.surveykit.backend.helpers.extensions.toColorStateList
 
 
@@ -64,6 +59,15 @@ class Footer @JvmOverloads constructor(
     var onContinue: () -> Unit = {}
     var onSkip: () -> Unit = {}
 
+    fun setButtonsGravity(gravity: Int) {
+        buttonContinue.layoutParams = (buttonContinue.layoutParams as LinearLayout.LayoutParams).apply {
+            this.gravity = gravity
+        }
+        buttonSkip.layoutParams = (buttonSkip.layoutParams as LinearLayout.LayoutParams).apply {
+            this.gravity = gravity
+        }
+    }
+
     //endregion
 
     //region Members
@@ -89,16 +93,11 @@ class Footer @JvmOverloads constructor(
     //region Private API
 
     private fun Button.colorMainButtonEnabledState(enabled: Boolean, color: Int) {
-        val drawable = context.resources.getDrawable(R.drawable.main_button_background, null)
-        if (enabled) {
-            drawable.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
-            (drawable as GradientDrawable).colorStroke(context.px(1f).toInt(), color)
-            setTextColor(color)
-            backgroundTintList = color.toColorStateList()
+        backgroundTintList = if (enabled) {
+            color.toColorStateList()
         } else {
-            setTextColor(ContextCompat.getColor(context, R.color.disabled_grey))
+            resources.getColor(R.color.disabled_grey, null).toColorStateList()
         }
-        background = drawable
     }
 
     private fun Button.colorSkipButton(color: Int) {
