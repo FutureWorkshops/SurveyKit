@@ -2,7 +2,7 @@ package com.quickbirdstudios.surveykit.backend.views.questions
 
 import android.content.Context
 import com.quickbirdstudios.surveykit.StepIdentifier
-import com.quickbirdstudios.surveykit.backend.views.step.ButtonOrientation
+import com.quickbirdstudios.surveykit.backend.views.step.ViewOrientation
 import com.quickbirdstudios.surveykit.backend.views.step.QuestionView
 import com.quickbirdstudios.surveykit.result.question_results.EmptyQuestionResult
 
@@ -13,7 +13,7 @@ class IntroQuestionView(
     title: String?,
     text: String?,
     startButtonText: String
-) : QuestionView(context, id, isOptional, title, text, startButtonText, ButtonOrientation.END) {
+) : QuestionView(context, id, isOptional, title, text, startButtonText, ViewOrientation.END) {
 
     //region Overrides
 

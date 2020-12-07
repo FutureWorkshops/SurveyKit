@@ -23,7 +23,8 @@ abstract class QuestionView(
     override val title: String?,
     private val text: String?,
     private val nextButtonText: String,
-    private val buttonOrientation: ButtonOrientation = ButtonOrientation.CENTER
+    private val buttonOrientation: ViewOrientation = ViewOrientation.CENTER,
+    private val textOrientation: ViewOrientation = ViewOrientation.CENTER
 ) : StepView(context, title, id, isOptional), ViewActions {
 
     //region Members
@@ -60,7 +61,8 @@ abstract class QuestionView(
 
     @CallSuper
     override fun setupViews() {
-        text?.let { InfoTextPart.info(context, it) }?.let(content::add)
+        title?.let { InfoTextPart.title(context, it, textOrientation) }?.let(content::add)
+        text?.let { InfoTextPart.info(context, it, textOrientation) }?.let(content::add)
 
         header.onBack = { onBackListener(createResults()) }
         // TODO add translations and move out of this class

@@ -6,7 +6,7 @@ package com.quickbirdstudios.surveykit.backend.views.step
 
 import android.view.Gravity
 
-enum class ButtonOrientation(
+enum class ViewOrientation(
     val gravity: Int
 ) {
 

@@ -23,4 +23,7 @@
     <dimen name="scale_part_selected_text_size">32sp</dimen>
     <dimen name="scale_part_text_padding">4dp</dimen>
     <dimen name="image_selection_colored_border">4dp</dimen>
+
+    <dimen name="big_title">34sp</dimen>
+    <dimen name="medium_title">24sp</dimen>
 </resources>
