@@ -4,7 +4,7 @@ import android.os.Parcelable
 import android.util.Patterns
 import androidx.annotation.DrawableRes
 import androidx.annotation.IntRange
-import com.quickbirdstudios.surveykit.backend.helpers.LocalizationService
+import com.quickbirdstudios.surveykit.services.localization.LocalizationService
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 import java.util.Date as JavaDate

@@ -2,9 +2,10 @@
  * Copyright (c) 2020 FutureWorkshops. All rights reserved.
  */
 
-package com.quickbirdstudios.surveykit.backend.helpers
+package com.quickbirdstudios.surveykit.services.localization
 
 import android.content.Context
+import com.quickbirdstudios.surveykit.backend.helpers.ProjectLocale
 import javax.inject.Inject
 import javax.inject.Singleton
 

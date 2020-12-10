@@ -9,16 +9,16 @@ import com.bumptech.glide.Glide
 import java.io.File
 import javax.inject.Inject
 
-class ImageLoaderService @Inject constructor() {
+class ImageLoaderService @Inject constructor(): IImageLoaderService {
 
-    fun loadImageFromUrl(url: String, imageView: ImageView) {
+    override fun loadImageFromUrl(url: String, imageView: ImageView) {
         Glide
             .with(imageView.context)
             .load(url)
             .into(imageView)
     }
 
-    fun loadImageFromFile(file: File, imageView: ImageView) {
+    override fun loadImageFromFile(file: File, imageView: ImageView) {
         Glide
             .with(imageView.context)
             .load(file)

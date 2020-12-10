@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.quickbirdstudios.surveykit.FinishReason
 import com.quickbirdstudios.surveykit.SurveyTheme
-import com.quickbirdstudios.surveykit.backend.helpers.LocalizationService
+import com.quickbirdstudios.surveykit.services.localization.LocalizationService
 import com.quickbirdstudios.surveykit.backend.navigator.TaskNavigator
 import com.quickbirdstudios.surveykit.backend.presenter.NextAction
 import com.quickbirdstudios.surveykit.backend.presenter.Presenter
@@ -16,6 +16,7 @@ import com.quickbirdstudios.surveykit.result.StepResult
 import com.quickbirdstudios.surveykit.result.TaskResult
 import com.quickbirdstudios.surveykit.services.MobileWorkflowServices
 import com.quickbirdstudios.surveykit.services.image_loader.ImageLoaderService
+import com.quickbirdstudios.surveykit.services.network.NetworkService
 import com.quickbirdstudios.surveykit.steps.Step
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,11 +46,12 @@ class SurveyView @JvmOverloads constructor(
         surveyTheme: SurveyTheme,
         isRestarting: Boolean,
         imageLoaderService: ImageLoaderService,
-        localizationService: LocalizationService
+        localizationService: LocalizationService,
+        networkService: NetworkService
     ) {
         this.taskNavigator = taskNavigator
         resultGatherer = ResultGathererImpl(taskNavigator.task)
-        this.mobileWorkflowServices = MobileWorkflowServices(imageLoaderService, localizationService)
+        this.mobileWorkflowServices = MobileWorkflowServices(imageLoaderService, localizationService, networkService)
 
         presenter = PresenterImpl(
             context = context,
