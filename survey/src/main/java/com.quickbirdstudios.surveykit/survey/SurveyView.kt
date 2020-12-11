@@ -3,6 +3,7 @@ package com.quickbirdstudios.surveykit.survey
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.appcompat.widget.Toolbar
 import com.quickbirdstudios.surveykit.FinishReason
 import com.quickbirdstudios.surveykit.SurveyTheme
 import com.quickbirdstudios.surveykit.services.localization.LocalizationService
@@ -41,6 +42,10 @@ class SurveyView @JvmOverloads constructor(
 
     //region Public API
 
+    var setUpToolbar: (toolbar: Toolbar) -> Unit = { _ ->
+
+    }
+
     override fun start(
         taskNavigator: TaskNavigator,
         surveyTheme: SurveyTheme,
@@ -57,6 +62,7 @@ class SurveyView @JvmOverloads constructor(
             context = context,
             surveyTheme = surveyTheme,
             viewContainer = this,
+            setUpToolbar = setUpToolbar,
             mobileWorkflowServices = mobileWorkflowServices
         )
         startSurvey(isRestarting)

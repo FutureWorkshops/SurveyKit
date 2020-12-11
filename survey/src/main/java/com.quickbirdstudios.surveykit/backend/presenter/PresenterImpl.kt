@@ -3,6 +3,8 @@ package com.quickbirdstudios.surveykit.backend.presenter
 import android.content.Context
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.appcompat.widget.Toolbar
+import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.SurveyTheme
 import com.quickbirdstudios.surveykit.backend.presenter.animations.ViewAnimator
@@ -18,7 +20,8 @@ internal class PresenterImpl(
     override val context: Context,
     override val viewContainer: FrameLayout,
     override val surveyTheme: SurveyTheme,
-    override val mobileWorkflowServices: MobileWorkflowServices
+    override val mobileWorkflowServices: MobileWorkflowServices,
+    private val setUpToolbar: (Toolbar) -> Unit
 ) : Presenter {
 
     //region Members
@@ -110,6 +113,7 @@ internal class PresenterImpl(
         questionView.setupViews()
         questionView.onViewCreated()
         questionView.style(surveyTheme)
+        setUpToolbar(questionView.findViewById(R.id.toolbar))
 
         when (transition) {
             Presenter.Transition.SlideFromRight -> viewAnimator.rightToLeft(
