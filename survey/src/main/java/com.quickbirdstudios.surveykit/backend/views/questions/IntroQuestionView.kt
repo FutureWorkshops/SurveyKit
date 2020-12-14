@@ -21,12 +21,5 @@ class IntroQuestionView(
 
     override fun isValidInput() = true
 
-    override fun setupViews() {
-        super.setupViews()
-
-        header.canBack = false
-        footer.questionCanBeSkipped = false
-    }
-
     //endregion
 }
