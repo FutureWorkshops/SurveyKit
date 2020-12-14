@@ -69,7 +69,7 @@ dependencies {
     api("androidx.core:core-ktx:1.3.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     implementation("androidx.recyclerview:recyclerview:1.0.0")
-    implementation("com.google.android.material:material:1.2.0")
+    implementation("com.google.android.material:material:1.2.1")
     implementation("com.airbnb.android:lottie:3.0.7")
     api("com.google.android.gms:play-services-maps:17.0.0")
     implementation("com.google.android.gms:play-services-location:17.0.0")

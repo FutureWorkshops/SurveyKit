@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:paddingBottom="12dp">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_continue"
@@ -13,6 +15,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="@dimen/question_vertical_padding"
         android:layout_marginVertical="@dimen/button_padding_vertical"
+        android:elevation="10dp"
+        android:stateListAnimator="@null"
         android:textColor="@android:color/white"
         tools:text="Weiter" />
 
@@ -24,6 +28,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="@dimen/question_vertical_padding"
         android:layout_marginVertical="@dimen/button_padding_vertical"
+        android:elevation="10dp"
+        android:stateListAnimator="@null"
         tools:text="Frage überspringen" />
 
 </LinearLayout>
