@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.LifecycleOwner
 import com.quickbirdstudios.surveykit.FinishReason
 import com.quickbirdstudios.surveykit.SurveyTheme
 import com.quickbirdstudios.surveykit.services.localization.LocalizationService
@@ -50,6 +51,7 @@ class SurveyView @JvmOverloads constructor(
         taskNavigator: TaskNavigator,
         surveyTheme: SurveyTheme,
         isRestarting: Boolean,
+        lifecycleOwner: LifecycleOwner,
         imageLoaderService: ImageLoaderService,
         localizationService: LocalizationService,
         networkService: NetworkService
@@ -62,6 +64,7 @@ class SurveyView @JvmOverloads constructor(
             context = context,
             surveyTheme = surveyTheme,
             viewContainer = this,
+            lifecycleOwner = lifecycleOwner,
             setUpToolbar = setUpToolbar,
             mobileWorkflowServices = mobileWorkflowServices
         )

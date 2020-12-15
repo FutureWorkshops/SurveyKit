@@ -2,6 +2,7 @@ package com.quickbirdstudios.surveykit.backend.presenter
 
 import android.content.Context
 import android.widget.FrameLayout
+import androidx.lifecycle.LifecycleOwner
 import com.quickbirdstudios.surveykit.SurveyTheme
 import com.quickbirdstudios.surveykit.result.StepResult
 import com.quickbirdstudios.surveykit.services.MobileWorkflowServices
@@ -11,6 +12,7 @@ interface Presenter {
     val context: Context
     val viewContainer: FrameLayout
     val surveyTheme: SurveyTheme
+    val lifecycleOwner: LifecycleOwner
     val mobileWorkflowServices: MobileWorkflowServices
 
     suspend operator fun invoke(

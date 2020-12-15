@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.LifecycleOwner
 import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.SurveyTheme
@@ -20,6 +21,7 @@ internal class PresenterImpl(
     override val context: Context,
     override val viewContainer: FrameLayout,
     override val surveyTheme: SurveyTheme,
+    override val lifecycleOwner: LifecycleOwner,
     override val mobileWorkflowServices: MobileWorkflowServices,
     private val setUpToolbar: (Toolbar) -> Unit
 ) : Presenter {
@@ -39,7 +41,7 @@ internal class PresenterImpl(
         step: Step,
         stepResult: StepResult?
     ): NextAction {
-        val viewToPresent = step.createView(context, stepResult, mobileWorkflowServices)
+        val viewToPresent = step.createView(context, stepResult, mobileWorkflowServices, lifecycleOwner)
         return showAndWaitForResult(step.id, viewToPresent, transition)
     }
 
