@@ -1,9 +1,9 @@
 package com.quickbirdstudios.surveykit.backend.presenter
 
 import android.content.Context
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.StepIdentifier
@@ -19,7 +19,8 @@ import kotlin.coroutines.suspendCoroutine
 
 internal class PresenterImpl(
     override val context: Context,
-    override val viewContainer: FrameLayout,
+    override val fragmentContainerView: FragmentContainerView,
+    override val childFragmentManager: FragmentManager,
     override val surveyTheme: SurveyTheme,
     override val lifecycleOwner: LifecycleOwner,
     override val mobileWorkflowServices: MobileWorkflowServices,

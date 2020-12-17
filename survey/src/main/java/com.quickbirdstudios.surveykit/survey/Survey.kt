@@ -1,5 +1,6 @@
 package com.quickbirdstudios.surveykit.survey
 
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.quickbirdstudios.surveykit.FinishReason
 import com.quickbirdstudios.surveykit.SurveyTheme
@@ -16,6 +17,7 @@ internal interface Survey {
     var onSurveyFinish: (TaskResult, FinishReason) -> Unit
 
     fun start(
+        childFragmentManager: FragmentManager,
         taskNavigator: TaskNavigator,
         surveyTheme: SurveyTheme,
         isRestarting: Boolean,
