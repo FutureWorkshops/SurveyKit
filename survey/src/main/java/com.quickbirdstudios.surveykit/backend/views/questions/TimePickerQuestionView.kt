@@ -1,6 +1,5 @@
 package com.quickbirdstudios.surveykit.backend.views.questions
 
-import android.content.Context
 import com.quickbirdstudios.surveykit.AnswerFormat
 import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.backend.views.question_parts.TimePickerPart
@@ -9,7 +8,6 @@ import com.quickbirdstudios.surveykit.result.QuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.TimeQuestionResult
 
 internal class TimePickerQuestionView(
-    context: Context,
     id: StepIdentifier,
     isOptional: Boolean,
     title: String?,
@@ -17,7 +15,7 @@ internal class TimePickerQuestionView(
     nextButtonText: String,
     private val answerFormat: AnswerFormat.TimeAnswerFormat,
     private val preselected: AnswerFormat.TimeAnswerFormat.Time?
-) : QuestionView(context, id, isOptional, title, text, nextButtonText) {
+) : QuestionView(id, isOptional, title, text, nextButtonText) {
 
     //region Members
 
@@ -38,15 +36,16 @@ internal class TimePickerQuestionView(
 
     override fun setupViews() {
         super.setupViews()
-
-        timePicker = content.add(TimePickerPart(context))
-        answerFormat.defaultValue?.let { timePicker.selected = it.toSelected() }
-        preselected?.let { timePicker.selected = it.toSelected() }
+        context?.let {
+            timePicker = content.add(TimePickerPart(it))
+            answerFormat.defaultValue?.let { timePicker.selected = it.toSelected() }
+            preselected?.let { timePicker.selected = it.toSelected() }
+        }
     }
 
     //endregion
 
-    //region Priavte API
+    //region Private API
 
     private fun AnswerFormat.TimeAnswerFormat.Time.toSelected(): TimePickerPart.Selected =
         TimePickerPart.Selected(hour = this.hour, minute = this.minute)

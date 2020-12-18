@@ -13,7 +13,6 @@ import com.quickbirdstudios.surveykit.result.QuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.NumberQuestionResult
 
 internal class NumberQuestionView(
-    context: Context,
     id: StepIdentifier,
     isOptional: Boolean,
     title: String?,
@@ -22,7 +21,7 @@ internal class NumberQuestionView(
     @StringRes private val hintText: Int = R.string.empty,
     private val answerFormat: AnswerFormat.NumberAnswerFormat,
     private val preselected: Long? = null
-) : QuestionView(context, id, isOptional, title, text, nextButtonText) {
+) : QuestionView(id, isOptional, title, text, nextButtonText) {
 
     //region Members
 
@@ -44,13 +43,14 @@ internal class NumberQuestionView(
 
     override fun setupViews() {
         super.setupViews()
-
-        questionAnswerView = content.add(NumberTextFieldPart.withHint(context, hintText))
-        questionAnswerView.field.gravity = Gravity.CENTER
-        questionAnswerView.field.hint = answerFormat.hint
-        questionAnswerView.field.afterTextChanged { footer.canContinue = isValidInput() }
-        val alreadyEntered = preselected?.toString() ?: answerFormat.defaultValue?.toString()
-        questionAnswerView.field.setText(alreadyEntered ?: "")
+        context?.let {
+            questionAnswerView = content.add(NumberTextFieldPart.withHint(it, hintText))
+            questionAnswerView.field.gravity = Gravity.CENTER
+            questionAnswerView.field.hint = answerFormat.hint
+            questionAnswerView.field.afterTextChanged { footer.canContinue = isValidInput() }
+            val alreadyEntered = preselected?.toString() ?: answerFormat.defaultValue?.toString()
+            questionAnswerView.field.setText(alreadyEntered ?: "")
+        }
     }
 
     //endregion

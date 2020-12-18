@@ -10,8 +10,7 @@ import com.quickbirdstudios.surveykit.steps.Step
 
 interface Presenter {
     val context: Context
-    val fragmentContainerView: FragmentContainerView
-    val childFragmentManager: FragmentManager
+    val fragmentManager: FragmentManager
     val surveyTheme: SurveyTheme
     val lifecycleOwner: LifecycleOwner
     val mobileWorkflowServices: MobileWorkflowServices

@@ -1,7 +1,6 @@
 package com.quickbirdstudios.surveykit.backend.presenter
 
 import android.content.Context
-import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
@@ -19,8 +18,7 @@ import kotlin.coroutines.suspendCoroutine
 
 internal class PresenterImpl(
     override val context: Context,
-    override val fragmentContainerView: FragmentContainerView,
-    override val childFragmentManager: FragmentManager,
+    override val fragmentManager: FragmentManager,
     override val surveyTheme: SurveyTheme,
     override val lifecycleOwner: LifecycleOwner,
     override val mobileWorkflowServices: MobileWorkflowServices,
@@ -62,7 +60,7 @@ internal class PresenterImpl(
     ): NextAction {
         val stepResult = StepResult(id = id, startDate = Date())
 
-        showView(questionView, transition)
+        showView(questionView)
 
         return suspendCoroutine { routine ->
             questionView.onNext { result ->
@@ -103,29 +101,21 @@ internal class PresenterImpl(
         this.onClose { _, _ -> }
     }
 
-    private fun showView(questionView: StepView, transition: Presenter.Transition) {
-        val previousQuestionView = currentQuestionView
+    private fun showView(questionView: StepView) {
         currentQuestionView = questionView
 
-        viewContainer.addView(questionView)
-        questionView.layoutParams.apply {
-            width = LinearLayout.LayoutParams.MATCH_PARENT
-            height = LinearLayout.LayoutParams.MATCH_PARENT
-        }
+        fragmentManager
+            .beginTransaction()
+            .replace(R.id.fragmentContainer, currentQuestionView!!) // TODO: Check !!
+            .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left) // TODO: Check RTL
+            .commit()
+
         questionView.setupSurveyTheme(surveyTheme)
         questionView.setupViews()
         questionView.onViewCreated()
         questionView.style(surveyTheme)
-        setUpToolbar(questionView.findViewById(R.id.toolbar))
-
-        when (transition) {
-            Presenter.Transition.SlideFromRight -> viewAnimator.rightToLeft(
-                viewContainer, ViewAnimator.PageSwipe(previousQuestionView, questionView)
-            )
-            Presenter.Transition.SlideFromLeft -> viewAnimator.leftToRight(
-                viewContainer, ViewAnimator.PageSwipe(previousQuestionView, questionView)
-            )
-            Presenter.Transition.None -> Unit
+        questionView.view?.findViewById<Toolbar>(R.id.toolbar)?.let { toolbar ->
+            setUpToolbar(toolbar)
         }
     }
 

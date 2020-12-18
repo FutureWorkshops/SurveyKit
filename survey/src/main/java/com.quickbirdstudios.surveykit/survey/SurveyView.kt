@@ -2,6 +2,7 @@ package com.quickbirdstudios.surveykit.survey
 
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.FrameLayout
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
@@ -29,7 +30,7 @@ class SurveyView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleRes: Int = 0
-) : FragmentContainerView(context, attrs, defStyleRes), Survey, CoroutineScope {
+) : FrameLayout(context, attrs, defStyleRes), Survey, CoroutineScope {
 
     //region Members
 
@@ -48,7 +49,7 @@ class SurveyView @JvmOverloads constructor(
     }
 
     override fun start(
-        childFragmentManager: FragmentManager,
+        fragmentManager: FragmentManager,
         taskNavigator: TaskNavigator,
         surveyTheme: SurveyTheme,
         isRestarting: Boolean,
@@ -64,8 +65,7 @@ class SurveyView @JvmOverloads constructor(
         presenter = PresenterImpl(
             context = context,
             surveyTheme = surveyTheme,
-            fragmentContainerView = this,
-            childFragmentManager = childFragmentManager,
+            fragmentManager = fragmentManager,
             lifecycleOwner = lifecycleOwner,
             setUpToolbar = setUpToolbar,
             mobileWorkflowServices = mobileWorkflowServices

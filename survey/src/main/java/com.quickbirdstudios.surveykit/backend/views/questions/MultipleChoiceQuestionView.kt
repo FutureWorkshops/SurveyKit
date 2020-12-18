@@ -1,6 +1,5 @@
 package com.quickbirdstudios.surveykit.backend.views.questions
 
-import android.content.Context
 import com.quickbirdstudios.surveykit.AnswerFormat
 import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.TextChoice
@@ -10,7 +9,6 @@ import com.quickbirdstudios.surveykit.result.QuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.MultipleChoiceQuestionResult
 
 internal class MultipleChoiceQuestionView(
-    context: Context,
     id: StepIdentifier,
     isOptional: Boolean,
     title: String?,
@@ -18,7 +16,7 @@ internal class MultipleChoiceQuestionView(
     nextButtonText: String,
     private val answerFormat: AnswerFormat.MultipleChoiceAnswerFormat,
     private val preselected: List<TextChoice>?
-) : QuestionView(context, id, isOptional, title, text, nextButtonText) {
+) : QuestionView(id, isOptional, title, text, nextButtonText) {
 
     //region Members
 
@@ -45,16 +43,17 @@ internal class MultipleChoiceQuestionView(
 
     override fun setupViews() {
         super.setupViews()
-
-        choicesContainer = content.add(MultipleChoicePart(context))
-        choicesContainer.options = answerFormat.textChoices
-        choicesContainer.onCheckedChangeListener = { _, _ -> footer.canContinue = isValidInput() }
-        choicesContainer.onTextChangedListener = { footer.canContinue = isValidInput() }
-        val preselectedOptions = preselected ?: emptyList()
-        val selectedOptions =
-            if (preselectedOptions.isNotEmpty()) preselectedOptions
-            else answerFormat.defaultSelections
-        choicesContainer.selected = selectedOptions
+        context?.let {
+            choicesContainer = content.add(MultipleChoicePart(it))
+            choicesContainer.options = answerFormat.textChoices
+            choicesContainer.onCheckedChangeListener = { _, _ -> footer.canContinue = isValidInput() }
+            choicesContainer.onTextChangedListener = { footer.canContinue = isValidInput() }
+            val preselectedOptions = preselected ?: emptyList()
+            val selectedOptions =
+                if (preselectedOptions.isNotEmpty()) preselectedOptions
+                else answerFormat.defaultSelections
+            choicesContainer.selected = selectedOptions
+        }
     }
 
     //endregion

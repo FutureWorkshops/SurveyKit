@@ -68,19 +68,19 @@ class QuestionStep(
         lifecycleOwner: LifecycleOwner
     ): QuestionView =
         when (answerFormat) {
-            is TextAnswerFormat -> createTextQuestion(context, stepResult, mobileWorkflowServices)
-            is SingleChoiceAnswerFormat -> createSingleChoiceQuestion(context, stepResult, mobileWorkflowServices)
-            is MultipleChoiceAnswerFormat -> createMultipleChoiceQuestion(context, stepResult, mobileWorkflowServices)
-            is ScaleAnswerFormat -> createScaleQuestion(context, stepResult, mobileWorkflowServices)
-            is NumberAnswerFormat -> createNumberQuestion(context, stepResult, mobileWorkflowServices)
-            is BooleanAnswerFormat -> createBooleanQuestion(context, stepResult, mobileWorkflowServices)
-            is ValuePickerAnswerFormat -> createValuePickerQuestion(context, stepResult, mobileWorkflowServices)
-            is DateAnswerFormat -> createDatePickerQuestion(context, stepResult, mobileWorkflowServices)
-            is TimeAnswerFormat -> createTimePickerQuestion(context, stepResult, mobileWorkflowServices)
-            is EmailAnswerFormat -> createEmailQuestion(context, stepResult, mobileWorkflowServices)
-            is ImageSelectorFormat -> createImageSelectorQuestion(context, stepResult, mobileWorkflowServices)
-            is LocationAnswerFormat -> createLocationQuestion(context, stepResult, mobileWorkflowServices)
-            is CurrencyAnswerFormat -> createCurrencyQuestion(context, stepResult, mobileWorkflowServices)
+            is TextAnswerFormat -> createTextQuestion(stepResult, mobileWorkflowServices)
+            is SingleChoiceAnswerFormat -> createSingleChoiceQuestion(stepResult, mobileWorkflowServices)
+            is MultipleChoiceAnswerFormat -> createMultipleChoiceQuestion(stepResult, mobileWorkflowServices)
+            is ScaleAnswerFormat -> createScaleQuestion(stepResult, mobileWorkflowServices)
+            is NumberAnswerFormat -> createNumberQuestion(stepResult, mobileWorkflowServices)
+            is BooleanAnswerFormat -> createBooleanQuestion(stepResult, mobileWorkflowServices)
+            is ValuePickerAnswerFormat -> createValuePickerQuestion(stepResult, mobileWorkflowServices)
+            is DateAnswerFormat -> createDatePickerQuestion(stepResult, mobileWorkflowServices)
+            is TimeAnswerFormat -> createTimePickerQuestion(stepResult, mobileWorkflowServices)
+            is EmailAnswerFormat -> createEmailQuestion(stepResult, mobileWorkflowServices)
+            is ImageSelectorFormat -> createImageSelectorQuestion(stepResult, mobileWorkflowServices)
+            is LocationAnswerFormat -> createLocationQuestion(stepResult, mobileWorkflowServices)
+            is CurrencyAnswerFormat -> createCurrencyQuestion(stepResult, mobileWorkflowServices)
         }
 
     //endregion
@@ -88,12 +88,10 @@ class QuestionStep(
     //region Private API
 
     private fun createTextQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ) =
         TextQuestionView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title),
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -104,7 +102,6 @@ class QuestionStep(
         )
 
     private fun createSingleChoiceQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ): SingleChoiceQuestionView {
@@ -113,7 +110,6 @@ class QuestionStep(
             format.copy(textChoices = format.textChoices.map { it.translate(mobileWorkflowServices.localizationService) })
 
         return SingleChoiceQuestionView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title),
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -125,7 +121,6 @@ class QuestionStep(
     }
 
     private fun createMultipleChoiceQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ): MultipleChoiceQuestionView {
@@ -134,7 +129,6 @@ class QuestionStep(
             format.copy(textChoices = format.textChoices.map { it.translate(mobileWorkflowServices.localizationService) })
 
         return MultipleChoiceQuestionView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title),
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -146,12 +140,10 @@ class QuestionStep(
     }
 
     private fun createScaleQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ) =
         ScaleQuestionView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title),
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -162,12 +154,10 @@ class QuestionStep(
         )
 
     private fun createNumberQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ) =
         NumberQuestionView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title),
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -178,12 +168,10 @@ class QuestionStep(
         )
 
     private fun createBooleanQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ) =
         BooleanQuestionView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title),
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -194,12 +182,10 @@ class QuestionStep(
         )
 
     private fun createValuePickerQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ) =
         ValuePickerQuestionView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title),
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -210,12 +196,11 @@ class QuestionStep(
         )
 
     private fun createDatePickerQuestion(
-        context: Context,
+
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ) =
         DatePickerQuestionView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title),
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -226,12 +211,10 @@ class QuestionStep(
         )
 
     private fun createTimePickerQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ) =
         TimePickerQuestionView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title),
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -242,12 +225,10 @@ class QuestionStep(
         )
 
     private fun createEmailQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ) =
         EmailQuestionView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title),
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -258,12 +239,10 @@ class QuestionStep(
         )
 
     private fun createImageSelectorQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ) =
         ImageSelectorQuestionView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title),
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -274,12 +253,10 @@ class QuestionStep(
         )
 
     private fun createLocationQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ) =
         LocationView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title) ?: "",
             text = mobileWorkflowServices.localizationService.getTranslation(text),
@@ -291,12 +268,10 @@ class QuestionStep(
         )
 
     private fun createCurrencyQuestion(
-        context: Context,
         stepResult: StepResult?,
         mobileWorkflowServices: MobileWorkflowServices
     ) =
         CurrencyView(
-            context = context,
             id = id,
             title = mobileWorkflowServices.localizationService.getTranslationOrNull(title) ?: "",
             text = mobileWorkflowServices.localizationService.getTranslation(text),

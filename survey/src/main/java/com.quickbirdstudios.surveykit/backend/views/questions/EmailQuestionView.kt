@@ -1,7 +1,7 @@
 package com.quickbirdstudios.surveykit.backend.views.questions
 
-import android.content.Context
 import android.text.InputType
+import android.view.View.TEXT_ALIGNMENT_CENTER
 import com.quickbirdstudios.surveykit.AnswerFormat
 import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.backend.helpers.extensions.afterTextChanged
@@ -11,7 +11,6 @@ import com.quickbirdstudios.surveykit.result.QuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.EmailQuestionResult
 
 internal class EmailQuestionView(
-    context: Context,
     id: StepIdentifier,
     isOptional: Boolean,
     title: String?,
@@ -19,7 +18,7 @@ internal class EmailQuestionView(
     nextButtonText: String,
     private val answerFormat: AnswerFormat.EmailAnswerFormat,
     private val preselected: String? = null
-) : QuestionView(context, id, isOptional, title, text, nextButtonText) {
+) : QuestionView(id, isOptional, title, text, nextButtonText) {
 
     //region Members
 
@@ -42,16 +41,17 @@ internal class EmailQuestionView(
 
     override fun setupViews() {
         super.setupViews()
-
-        emailField = content.add(
-            TextFieldPart.withHint(context, answerFormat.hintText ?: "")
-        )
-        emailField.field.apply {
-            inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-            maxLines = 1
-            textAlignment = TEXT_ALIGNMENT_CENTER
-            afterTextChanged { footer.canContinue = isValidInput() }
-            setText(preselected)
+        context?.let {
+            emailField = content.add(
+                TextFieldPart.withHint(it, answerFormat.hintText ?: "")
+            )
+            emailField.field.apply {
+                inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                maxLines = 1
+                textAlignment = TEXT_ALIGNMENT_CENTER
+                afterTextChanged { footer.canContinue = isValidInput() }
+                setText(preselected)
+            }
         }
     }
 

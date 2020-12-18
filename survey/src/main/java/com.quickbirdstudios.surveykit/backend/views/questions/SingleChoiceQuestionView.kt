@@ -10,7 +10,6 @@ import com.quickbirdstudios.surveykit.result.QuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.SingleChoiceQuestionResult
 
 internal class SingleChoiceQuestionView(
-    context: Context,
     id: StepIdentifier,
     isOptional: Boolean,
     title: String?,
@@ -18,7 +17,7 @@ internal class SingleChoiceQuestionView(
     nextButtonText: String,
     private val answerFormat: AnswerFormat.SingleChoiceAnswerFormat,
     private val preselected: TextChoice? = null
-) : QuestionView(context, id, isOptional, title, text, nextButtonText) {
+) : QuestionView(id, isOptional, title, text, nextButtonText) {
 
     //region Members
 
@@ -50,11 +49,13 @@ internal class SingleChoiceQuestionView(
     override fun setupViews() {
         super.setupViews()
 
-        choicesContainer = content.add(SingleChoicePart(context))
-        choicesContainer.options = answerFormat.textChoices
-        choicesContainer.onCheckedChangeListener = { _, _ -> footer.canContinue = isValidInput() }
-        choicesContainer.onTextChangedListener = { footer.canContinue = isValidInput() }
-        choicesContainer.selected = preselected ?: answerFormat.defaultSelection
+        context?.let {
+            choicesContainer = content.add(SingleChoicePart(it))
+            choicesContainer.options = answerFormat.textChoices
+            choicesContainer.onCheckedChangeListener = { _, _ -> footer.canContinue = isValidInput() }
+            choicesContainer.onTextChangedListener = { footer.canContinue = isValidInput() }
+            choicesContainer.selected = preselected ?: answerFormat.defaultSelection
+        }
     }
 
     //endregion

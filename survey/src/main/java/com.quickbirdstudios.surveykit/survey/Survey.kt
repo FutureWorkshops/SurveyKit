@@ -17,7 +17,7 @@ internal interface Survey {
     var onSurveyFinish: (TaskResult, FinishReason) -> Unit
 
     fun start(
-        childFragmentManager: FragmentManager,
+        fragmentManager: FragmentManager,
         taskNavigator: TaskNavigator,
         surveyTheme: SurveyTheme,
         isRestarting: Boolean,

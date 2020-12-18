@@ -1,7 +1,10 @@
 package com.quickbirdstudios.surveykit.backend.views.step
 
-import android.content.Context
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.annotation.CallSuper
 import com.quickbirdstudios.surveykit.FinishReason
@@ -21,7 +24,6 @@ import com.quickbirdstudios.surveykit.services.image_loader.ImageLoaderService
 import java.util.*
 
 abstract class QuestionView(
-    context: Context,
     id: StepIdentifier,
     isOptional: Boolean,
     override val title: String?,
@@ -31,17 +33,22 @@ abstract class QuestionView(
     private val imageContentMode: ImageContentMode? = null,
     private val buttonOrientation: ViewOrientation = ViewOrientation.CENTER,
     private val textOrientation: ViewOrientation = ViewOrientation.CENTER
-) : StepView(context, title, id, isOptional), ViewActions {
+) : StepView(title, id, isOptional), ViewActions {
 
     //region Members
 
-    private val root: View = View.inflate(context, R.layout.view_question, this)
+    private lateinit var root: View
     var header: Header = root.findViewById(R.id.questionHeader)
     var content: Content = root.findViewById(R.id.questionContent)
     var footer: Footer = content.findViewById(R.id.questionFooter)
     private var abortDialogConfiguration: AbortDialogConfiguration? = null
 
     val startDate: Date = Date()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        root = View.inflate(context, R.layout.view_question, container)
+        return root
+    }
 
     //endregion
 
@@ -67,51 +74,53 @@ abstract class QuestionView(
 
     @CallSuper
     override fun setupViews() {
-        imageUrl?.let {
-            val displayMetrics = resources.displayMetrics
-            val dpHeight = (displayMetrics.heightPixels / displayMetrics.density)
-            val pxHeight = context.px(dpHeight)
-            val imageView = ImageView(context).apply {
-                layoutParams = LayoutParams(
-                    LayoutParams.MATCH_PARENT,
-                    (pxHeight * 0.45).toInt()
-                ).apply {
-                    setMargins(0, 0, 0, (pxHeight * 0.05).toInt())
+        context?.let { safeContext ->
+            imageUrl?.let {
+                val displayMetrics = resources.displayMetrics
+                val dpHeight = (displayMetrics.heightPixels / displayMetrics.density)
+                val pxHeight = safeContext.px(dpHeight)
+                val imageView = ImageView(safeContext).apply {
+                    layoutParams = FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        (pxHeight * 0.45).toInt()
+                    ).apply {
+                        setMargins(0, 0, 0, (pxHeight * 0.05).toInt())
+                    }
+
+                    scaleType = when (imageContentMode) {
+                        ImageContentMode.FILL -> ImageView.ScaleType.FIT_XY
+                        ImageContentMode.ASPECT_FIT -> ImageView.ScaleType.CENTER_INSIDE
+                        ImageContentMode.ASPECT_FILL,
+                        null -> ImageView.ScaleType.CENTER_CROP
+                    }
                 }
 
-                scaleType = when (imageContentMode) {
-                    ImageContentMode.FILL -> ImageView.ScaleType.FIT_XY
-                    ImageContentMode.ASPECT_FIT -> ImageView.ScaleType.CENTER_INSIDE
-                    ImageContentMode.ASPECT_FILL,
-                    null -> ImageView.ScaleType.CENTER_CROP
+                content.add(imageView)
+                ImageLoaderService().loadImageFromUrl(imageUrl, imageView)
+            }
+
+            title?.let { InfoTextPart.title(safeContext, it, textOrientation) }?.let(content::add)
+            text?.let { InfoTextPart.info(safeContext, it, textOrientation) }?.let(content::add)
+
+            header.onBack = { onBackListener(createResults()) }
+            // TODO add translations and move out of this class
+            header.onCancel = {
+                Dialogs.cancel(
+                    safeContext,
+                    AbortDialogConfiguration(
+                        abortDialogConfiguration?.title ?: R.string.abort_dialog_title,
+                        abortDialogConfiguration?.message ?: R.string.abort_dialog_message,
+                        abortDialogConfiguration?.neutralMessage
+                            ?: R.string.abort_dialog_neutral_message,
+                        abortDialogConfiguration?.negativeMessage ?: R.string.abort_dialog_neutral_message
+                    )
+                ) {
+                    onCloseListener(createResults(), FinishReason.Discarded)
                 }
             }
 
-            content.add(imageView)
-            ImageLoaderService().loadImageFromUrl(imageUrl, imageView)
+            footer.setButtonsGravity(buttonOrientation.gravity)
         }
-
-        title?.let { InfoTextPart.title(context, it, textOrientation) }?.let(content::add)
-        text?.let { InfoTextPart.info(context, it, textOrientation) }?.let(content::add)
-
-        header.onBack = { onBackListener(createResults()) }
-        // TODO add translations and move out of this class
-        header.onCancel = {
-            Dialogs.cancel(
-                context,
-                AbortDialogConfiguration(
-                    abortDialogConfiguration?.title ?: R.string.abort_dialog_title,
-                    abortDialogConfiguration?.message ?: R.string.abort_dialog_message,
-                    abortDialogConfiguration?.neutralMessage
-                        ?: R.string.abort_dialog_neutral_message,
-                    abortDialogConfiguration?.negativeMessage ?: R.string.abort_dialog_neutral_message
-                )
-            ) {
-                onCloseListener(createResults(), FinishReason.Discarded)
-            }
-        }
-
-        footer.setButtonsGravity(buttonOrientation.gravity)
     }
 
     override fun onViewCreated() {
