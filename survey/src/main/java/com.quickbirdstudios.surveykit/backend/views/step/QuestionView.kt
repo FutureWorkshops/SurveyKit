@@ -13,6 +13,7 @@ import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.backend.domain.ImageContentMode
 import com.quickbirdstudios.surveykit.backend.helpers.extensions.px
 import com.quickbirdstudios.surveykit.backend.views.main_parts.AbortDialogConfiguration
+import com.quickbirdstudios.surveykit.backend.views.main_parts.CanContinueListener
 import com.quickbirdstudios.surveykit.backend.views.main_parts.Content
 import com.quickbirdstudios.surveykit.backend.views.main_parts.Dialogs
 import com.quickbirdstudios.surveykit.backend.views.main_parts.Footer
@@ -37,6 +38,7 @@ abstract class QuestionView(
     //region Members
 
     private lateinit var root: View
+    private lateinit var canContinueListener: CanContinueListener
     lateinit var header: Header
     lateinit var content: Content
     lateinit var footer: Footer
@@ -49,6 +51,10 @@ abstract class QuestionView(
         return root
     }
 
+    fun setFormItem(canContinueListener: CanContinueListener) {
+        this.canContinueListener = canContinueListener
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         header = root.findViewById(R.id.questionHeader)
@@ -57,6 +63,15 @@ abstract class QuestionView(
         setUpToolbar(root.findViewById(R.id.toolbar))
         setupViews()
         onViewCreated()
+
+        if (::canContinueListener.isInitialized) {
+            header.visibility = View.GONE
+            content.hideFooterContainer()
+            canContinueListener.registerId(id.id, isValidInput())
+            footer.setCanContinueListener(id.id, canContinueListener)
+            val marginInDp = resources.getDimension(R.dimen.form_view_vertical_margin).toInt()
+            content.changeContainerVerticalMargins(marginInDp)
+        }
     }
 
     //endregion

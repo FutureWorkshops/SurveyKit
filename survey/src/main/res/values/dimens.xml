@@ -26,4 +26,6 @@
 
     <dimen name="big_title">34sp</dimen>
     <dimen name="medium_title">24sp</dimen>
+
+    <dimen name="form_view_vertical_margin">10dp</dimen>
 </resources>

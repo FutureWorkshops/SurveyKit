@@ -44,7 +44,7 @@ abstract class StepView(
         this.surveyTheme = surveyTheme
     }
 
-    protected lateinit var setUpToolbar: (Toolbar) -> Unit
+    protected open var setUpToolbar: (Toolbar) -> Unit = {}
     fun setupToolbarFunction(setUpToolbar: (Toolbar) -> Unit) {
         this.setUpToolbar = setUpToolbar
     }
