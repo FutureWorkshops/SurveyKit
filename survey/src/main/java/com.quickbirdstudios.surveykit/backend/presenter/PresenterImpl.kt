@@ -60,7 +60,7 @@ internal class PresenterImpl(
     ): NextAction {
         val stepResult = StepResult(id = id, startDate = Date())
 
-        showView(questionView)
+        showView(questionView, transition)
 
         return suspendCoroutine { routine ->
             questionView.onNext { result ->
@@ -101,17 +101,30 @@ internal class PresenterImpl(
         this.onClose { _, _ -> }
     }
 
-    private fun showView(questionView: StepView) {
+    private fun showView(questionView: StepView, transition: Presenter.Transition) {
         currentQuestionView = questionView
 
-        fragmentManager
+        val transaction = fragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left) // TODO: Check RTL
-            .replace(R.id.fragmentContainer, currentQuestionView!!) // TODO: Check !!
-            .commit()
 
         questionView.setupSurveyTheme(surveyTheme)
         questionView.setupToolbarFunction(setUpToolbar)
+
+        transaction.apply {
+            when (transition) {
+                Presenter.Transition.SlideFromRight -> setCustomAnimations(
+                    R.anim.enter_from_right,
+                    R.anim.exit_to_left
+                )
+                Presenter.Transition.SlideFromLeft -> setCustomAnimations(
+                    R.anim.enter_from_left,
+                    R.anim.exit_to_right
+                )
+                Presenter.Transition.None -> Unit
+            }
+            replace(R.id.fragmentContainer, currentQuestionView!!)
+            commit()
+        }
     }
 
     //endregion
