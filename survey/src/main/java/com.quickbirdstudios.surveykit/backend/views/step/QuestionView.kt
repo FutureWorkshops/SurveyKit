@@ -10,7 +10,6 @@ import androidx.annotation.CallSuper
 import com.quickbirdstudios.surveykit.FinishReason
 import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.StepIdentifier
-import com.quickbirdstudios.surveykit.SurveyTheme
 import com.quickbirdstudios.surveykit.backend.domain.ImageContentMode
 import com.quickbirdstudios.surveykit.backend.helpers.extensions.px
 import com.quickbirdstudios.surveykit.backend.views.main_parts.AbortDialogConfiguration
@@ -38,27 +37,31 @@ abstract class QuestionView(
     //region Members
 
     private lateinit var root: View
-    var header: Header = root.findViewById(R.id.questionHeader)
-    var content: Content = root.findViewById(R.id.questionContent)
-    var footer: Footer = content.findViewById(R.id.questionFooter)
+    lateinit var header: Header
+    lateinit var content: Content
+    lateinit var footer: Footer
     private var abortDialogConfiguration: AbortDialogConfiguration? = null
 
     val startDate: Date = Date()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        root = View.inflate(context, R.layout.view_question, container)
+        root = inflater.inflate(R.layout.view_question, container, false)
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        header = root.findViewById(R.id.questionHeader)
+        content = root.findViewById(R.id.questionContent)
+        footer = content.findViewById(R.id.questionFooter)
+        setUpToolbar(root.findViewById(R.id.toolbar))
+        setupViews()
+        onViewCreated()
     }
 
     //endregion
 
     //region Overrides
-
-    override fun style(surveyTheme: SurveyTheme) {
-        header.style(surveyTheme)
-        content.style(surveyTheme)
-        abortDialogConfiguration = surveyTheme.abortDialogConfiguration
-    }
 
     //endregion
 
@@ -131,6 +134,10 @@ abstract class QuestionView(
         footer.onSkip = { onSkipListener() }
         footer.questionCanBeSkipped = isOptional
         footer.setContinueButtonText(nextButtonText)
+
+        header.style(surveyTheme)
+        content.style(surveyTheme)
+        abortDialogConfiguration = surveyTheme.abortDialogConfiguration
     }
 
 //endregion

@@ -1,17 +1,17 @@
 package com.quickbirdstudios.surveykit.backend.views.step
 
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.quickbirdstudios.surveykit.FinishReason
 import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.SurveyTheme
-import com.quickbirdstudios.surveykit.backend.views.main_parts.StyleablePart
 import com.quickbirdstudios.surveykit.result.QuestionResult
 
 abstract class StepView(
     open val title: String?,
     override val id: StepIdentifier,
     override val isOptional: Boolean
-) : Fragment(), ViewActions, StyleablePart {
+) : Fragment(), ViewActions {
 
     protected var onNextListener: (QuestionResult) -> Unit = {}
     override fun onNext(block: (QuestionResult) -> Unit) {
@@ -42,5 +42,10 @@ abstract class StepView(
 
     fun setupSurveyTheme(surveyTheme: SurveyTheme) {
         this.surveyTheme = surveyTheme
+    }
+
+    protected lateinit var setUpToolbar: (Toolbar) -> Unit
+    fun setupToolbarFunction(setUpToolbar: (Toolbar) -> Unit) {
+        this.setUpToolbar = setUpToolbar
     }
 }

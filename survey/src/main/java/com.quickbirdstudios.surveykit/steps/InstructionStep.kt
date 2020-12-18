@@ -22,7 +22,6 @@ open class InstructionStep(
         mobileWorkflowServices: MobileWorkflowServices,
         lifecycleOwner: LifecycleOwner
     ) = IntroQuestionView(
-        context = context,
         id = id,
         isOptional = isOptional,
         title = title,

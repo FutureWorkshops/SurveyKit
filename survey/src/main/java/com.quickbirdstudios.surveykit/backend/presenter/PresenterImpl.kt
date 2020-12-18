@@ -111,12 +111,7 @@ internal class PresenterImpl(
             .commit()
 
         questionView.setupSurveyTheme(surveyTheme)
-        questionView.setupViews()
-        questionView.onViewCreated()
-        questionView.style(surveyTheme)
-        questionView.view?.findViewById<Toolbar>(R.id.toolbar)?.let { toolbar ->
-            setUpToolbar(toolbar)
-        }
+        questionView.setupToolbarFunction(setUpToolbar)
     }
 
     //endregion
