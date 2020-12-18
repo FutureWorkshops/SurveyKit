@@ -34,12 +34,19 @@ internal class LocationView(
 ) : QuestionView(id, isOptional, title, text, nextButtonText),
     LocationViewListener {
 
-    private val fusedLocationProviderClient = FusedLocationProviderClient(requireContext())
-    private val geocoder = Geocoder(context, Locale.getDefault())
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var geocoder: Geocoder
     private var map: GoogleMap? = null
 
     private lateinit var locationPart: LocationPart
     private var location: Location? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        fusedLocationProviderClient = FusedLocationProviderClient(context)
+        geocoder = Geocoder(context, Locale.getDefault())
+    }
 
     override fun createResults(): QuestionResult {
         locationFragmentListener.clearMapView()
