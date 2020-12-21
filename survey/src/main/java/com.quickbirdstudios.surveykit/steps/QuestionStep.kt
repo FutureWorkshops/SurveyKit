@@ -1,7 +1,6 @@
 package com.quickbirdstudios.surveykit.steps
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
 import com.quickbirdstudios.surveykit.AnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.BooleanAnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.CurrencyAnswerFormat
@@ -64,8 +63,7 @@ class QuestionStep(
     override fun createView(
         context: Context,
         stepResult: StepResult?,
-        mobileWorkflowServices: MobileWorkflowServices,
-        lifecycleOwner: LifecycleOwner
+        mobileWorkflowServices: MobileWorkflowServices
     ): QuestionView =
         when (answerFormat) {
             is TextAnswerFormat -> createTextQuestion(stepResult, mobileWorkflowServices)
