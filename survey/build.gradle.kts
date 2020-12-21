@@ -78,6 +78,7 @@ dependencies {
     implementation("javax.inject:javax.inject:1")
     implementation("com.github.bumptech.glide:glide:4.11.0")
     kapt("com.github.bumptech.glide:compiler:4.11.0")
+    api("androidx.fragment:fragment-ktx:1.3.0-rc01")
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
     testImplementation("org.junit.platform:junit-platform-runner:1.5.2")

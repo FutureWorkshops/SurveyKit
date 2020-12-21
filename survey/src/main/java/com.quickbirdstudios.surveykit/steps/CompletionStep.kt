@@ -27,7 +27,6 @@ class CompletionStep(
         mobileWorkflowServices: MobileWorkflowServices,
         lifecycleOwner: LifecycleOwner
     ): StepView = FinishQuestionView(
-        context = context,
         title = title,
         text = text,
         finishButtonText = buttonText,

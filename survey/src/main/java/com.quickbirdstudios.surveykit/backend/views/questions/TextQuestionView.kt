@@ -10,7 +10,6 @@ import com.quickbirdstudios.surveykit.result.QuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.TextQuestionResult
 
 internal class TextQuestionView(
-    context: Context,
     id: StepIdentifier,
     isOptional: Boolean,
     title: String?,
@@ -18,7 +17,7 @@ internal class TextQuestionView(
     nextButtonText: String,
     private val answerFormat: AnswerFormat.TextAnswerFormat,
     private val preselected: String? = null
-) : QuestionView(context, id, isOptional, title, text, nextButtonText) {
+) : QuestionView(id, isOptional, title, text, nextButtonText) {
 
     //region Members
 
@@ -46,12 +45,14 @@ internal class TextQuestionView(
     override fun setupViews() {
         super.setupViews()
 
-        questionAnswerView = content.add(
-            TextFieldPart.withHint(context, answerFormat.hintText ?: "")
-        )
-        questionAnswerView.field.maxLines = answerFormat.maxLines
-        questionAnswerView.field.afterTextChanged { footer.canContinue = isValidInput() }
-        questionAnswerView.field.setText(preselected)
+        context?.let {
+            questionAnswerView = content.add(
+                TextFieldPart.withHint(it, answerFormat.hintText ?: "")
+            )
+            questionAnswerView.field.maxLines = answerFormat.maxLines
+            questionAnswerView.field.afterTextChanged { footer.canContinue = isValidInput() }
+            questionAnswerView.field.setText(preselected)
+        }
     }
 
     //endregion

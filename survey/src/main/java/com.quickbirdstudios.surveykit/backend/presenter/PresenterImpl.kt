@@ -1,9 +1,9 @@
 package com.quickbirdstudios.surveykit.backend.presenter
 
 import android.content.Context
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
 import androidx.lifecycle.LifecycleOwner
 import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.StepIdentifier
@@ -19,7 +19,7 @@ import kotlin.coroutines.suspendCoroutine
 
 internal class PresenterImpl(
     override val context: Context,
-    override val viewContainer: FrameLayout,
+    override val fragmentManager: FragmentManager,
     override val surveyTheme: SurveyTheme,
     override val lifecycleOwner: LifecycleOwner,
     override val mobileWorkflowServices: MobileWorkflowServices,
@@ -103,28 +103,24 @@ internal class PresenterImpl(
     }
 
     private fun showView(questionView: StepView, transition: Presenter.Transition) {
-        val previousQuestionView = currentQuestionView
         currentQuestionView = questionView
 
-        viewContainer.addView(questionView)
-        questionView.layoutParams.apply {
-            width = LinearLayout.LayoutParams.MATCH_PARENT
-            height = LinearLayout.LayoutParams.MATCH_PARENT
-        }
-        questionView.setupSurveyTheme(surveyTheme)
-        questionView.setupViews()
-        questionView.onViewCreated()
-        questionView.style(surveyTheme)
-        setUpToolbar(questionView.findViewById(R.id.toolbar))
+        fragmentManager.commit {
+            questionView.setupSurveyTheme(surveyTheme)
+            questionView.setupToolbarFunction(setUpToolbar)
 
-        when (transition) {
-            Presenter.Transition.SlideFromRight -> viewAnimator.rightToLeft(
-                viewContainer, ViewAnimator.PageSwipe(previousQuestionView, questionView)
-            )
-            Presenter.Transition.SlideFromLeft -> viewAnimator.leftToRight(
-                viewContainer, ViewAnimator.PageSwipe(previousQuestionView, questionView)
-            )
-            Presenter.Transition.None -> Unit
+            when (transition) {
+                Presenter.Transition.SlideFromRight -> setCustomAnimations(
+                    R.anim.enter_from_right,
+                    R.anim.exit_to_left
+                )
+                Presenter.Transition.SlideFromLeft -> setCustomAnimations(
+                    R.anim.enter_from_left,
+                    R.anim.exit_to_right
+                )
+                Presenter.Transition.None -> Unit
+            }
+            replace(R.id.fragmentContainer, currentQuestionView!!)
         }
     }
 

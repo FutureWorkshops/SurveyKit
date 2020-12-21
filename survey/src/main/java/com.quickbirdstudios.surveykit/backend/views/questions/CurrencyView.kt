@@ -1,6 +1,5 @@
 package com.quickbirdstudios.surveykit.backend.views.questions
 
-import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
@@ -10,7 +9,7 @@ import com.quickbirdstudios.surveykit.backend.views.question_parts.CurrencyPart
 import com.quickbirdstudios.surveykit.backend.views.step.QuestionView
 import com.quickbirdstudios.surveykit.result.QuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.CurrencyQuestionResult
-import kotlinx.android.synthetic.main.currency_step.view.*
+import kotlinx.android.synthetic.main.currency_step.*
 import java.lang.ref.WeakReference
 import java.math.BigDecimal
 import java.text.NumberFormat
@@ -18,7 +17,6 @@ import java.util.*
 
 
 internal class CurrencyView(
-    context: Context,
     id: StepIdentifier,
     isOptional: Boolean,
     title: String,
@@ -26,7 +24,7 @@ internal class CurrencyView(
     nextButtonText: String,
     private val currencyAnswerFormat: AnswerFormat.CurrencyAnswerFormat,
     private val preselected: CurrencyQuestionResult? = null
-) : QuestionView(context, id, isOptional, title, text, nextButtonText) {
+) : QuestionView(id, isOptional, title, text, nextButtonText) {
 
     private lateinit var currencyPart: CurrencyPart
 
@@ -47,15 +45,17 @@ internal class CurrencyView(
 
     override fun setupViews() {
         super.setupViews()
-        currencyPart = CurrencyPart(context)
-        content.add(currencyPart)
+        context?.let {
+            currencyPart = CurrencyPart(it)
+            content.add(currencyPart)
 
-        val moneyTextWatcher = MoneyTextWatcher(valueEt, currencyAnswerFormat.currencyCode) {
-            footer.canContinue = isValidInput()
+            val moneyTextWatcher = MoneyTextWatcher(valueEt, currencyAnswerFormat.currencyCode) {
+                footer.canContinue = isValidInput()
+            }
+
+            preselected?.value?.let { moneyTextWatcher.setValue(it, true) }
+            valueEt.addTextChangedListener(moneyTextWatcher)
         }
-
-        preselected?.value?.let { moneyTextWatcher.setValue(it, true) }
-        valueEt.addTextChangedListener(moneyTextWatcher)
     }
 
     private class MoneyTextWatcher(

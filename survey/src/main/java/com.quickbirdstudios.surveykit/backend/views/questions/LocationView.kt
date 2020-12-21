@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.location_step.view.*
 import java.util.*
 
 internal class LocationView(
-    context: Context,
     id: StepIdentifier,
     isOptional: Boolean,
     title: String,
@@ -32,15 +31,22 @@ internal class LocationView(
     nextButtonText: String,
     private val preselected: LocationResult?,
     private val locationFragmentListener: LocationFragmentListener
-) : QuestionView(context, id, isOptional, title, text, nextButtonText),
+) : QuestionView(id, isOptional, title, text, nextButtonText),
     LocationViewListener {
 
-    private val fusedLocationProviderClient = FusedLocationProviderClient(context)
-    private val geocoder = Geocoder(context, Locale.getDefault())
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var geocoder: Geocoder
     private var map: GoogleMap? = null
 
     private lateinit var locationPart: LocationPart
     private var location: Location? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        fusedLocationProviderClient = FusedLocationProviderClient(context)
+        geocoder = Geocoder(context, Locale.getDefault())
+    }
 
     override fun createResults(): QuestionResult {
         locationFragmentListener.clearMapView()
@@ -59,23 +65,25 @@ internal class LocationView(
 
     override fun setupViews() {
         super.setupViews()
-        locationPart = LocationPart(context)
+        context?.let {
+            locationPart = LocationPart(it)
 
-        with(locationPart) {
-            view.addressEt.setOnEditorActionListener { view, actionId, _ ->
-                var handled = false
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    val address = view.addressEt.text.toString()
-                    if (address.isNotEmpty()) setMarkerFromAddress(address)
-                    handled = true
+            with(locationPart) {
+                view.addressEt.setOnEditorActionListener { view, actionId, _ ->
+                    var handled = false
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        val address = view.addressEt.text.toString()
+                        if (address.isNotEmpty()) setMarkerFromAddress(address)
+                        handled = true
+                    }
+
+                    hideKeyboard(view)
+                    handled
                 }
 
-                hideKeyboard(view)
-                handled
+                content.add(this)
+                locationFragmentListener.setUpMapView(view.mapView, this@LocationView)
             }
-
-            content.add(this)
-            locationFragmentListener.setUpMapView(view.mapView, this@LocationView)
         }
     }
 

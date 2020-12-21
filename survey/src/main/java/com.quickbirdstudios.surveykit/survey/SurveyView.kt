@@ -2,12 +2,14 @@ package com.quickbirdstudios.surveykit.survey
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.quickbirdstudios.surveykit.FinishReason
+import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.SurveyTheme
-import com.quickbirdstudios.surveykit.services.localization.LocalizationService
 import com.quickbirdstudios.surveykit.backend.navigator.TaskNavigator
 import com.quickbirdstudios.surveykit.backend.presenter.NextAction
 import com.quickbirdstudios.surveykit.backend.presenter.Presenter
@@ -18,6 +20,7 @@ import com.quickbirdstudios.surveykit.result.StepResult
 import com.quickbirdstudios.surveykit.result.TaskResult
 import com.quickbirdstudios.surveykit.services.MobileWorkflowServices
 import com.quickbirdstudios.surveykit.services.image_loader.ImageLoaderService
+import com.quickbirdstudios.surveykit.services.localization.LocalizationService
 import com.quickbirdstudios.surveykit.services.network.NetworkService
 import com.quickbirdstudios.surveykit.steps.Step
 import kotlinx.coroutines.CoroutineScope
@@ -30,6 +33,8 @@ class SurveyView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleRes: Int = 0
 ) : FrameLayout(context, attrs, defStyleRes), Survey, CoroutineScope {
+
+    private val root: View = View.inflate(context, R.layout.layout_survey_view, this)
 
     //region Members
 
@@ -48,6 +53,7 @@ class SurveyView @JvmOverloads constructor(
     }
 
     override fun start(
+        fragmentManager: FragmentManager,
         taskNavigator: TaskNavigator,
         surveyTheme: SurveyTheme,
         isRestarting: Boolean,
@@ -63,7 +69,7 @@ class SurveyView @JvmOverloads constructor(
         presenter = PresenterImpl(
             context = context,
             surveyTheme = surveyTheme,
-            viewContainer = this,
+            fragmentManager = fragmentManager,
             lifecycleOwner = lifecycleOwner,
             setUpToolbar = setUpToolbar,
             mobileWorkflowServices = mobileWorkflowServices

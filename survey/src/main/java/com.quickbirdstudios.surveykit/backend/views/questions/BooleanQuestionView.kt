@@ -1,6 +1,5 @@
 package com.quickbirdstudios.surveykit.backend.views.questions
 
-import android.content.Context
 import com.quickbirdstudios.surveykit.AnswerFormat
 import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.TextChoice
@@ -10,7 +9,6 @@ import com.quickbirdstudios.surveykit.result.QuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.BooleanQuestionResult
 
 internal class BooleanQuestionView(
-    context: Context,
     id: StepIdentifier,
     isOptional: Boolean,
     title: String?,
@@ -18,7 +16,7 @@ internal class BooleanQuestionView(
     nextButtonText: String,
     private val answerFormat: AnswerFormat.BooleanAnswerFormat,
     private var preselected: AnswerFormat.BooleanAnswerFormat.Result?
-) : QuestionView(context, id, isOptional, title, text, nextButtonText) {
+) : QuestionView(id, isOptional, title, text, nextButtonText) {
 
     //region Members
 
@@ -47,12 +45,14 @@ internal class BooleanQuestionView(
     override fun setupViews() {
         super.setupViews()
 
-        val selected = preselected ?: answerFormat.defaultValue
+        context?.let {
+            val selected = preselected ?: answerFormat.defaultValue
 
-        booleanAnswerPart = content.add(SingleChoicePart(context))
-        booleanAnswerPart.options = answerFormat.textChoices
-        booleanAnswerPart.onCheckedChangeListener = { _, _ -> footer.canContinue = isValidInput() }
-        booleanAnswerPart.selected = selected.toSelectedTextChoice(answerFormat)
+            booleanAnswerPart = content.add(SingleChoicePart(it))
+            booleanAnswerPart.options = answerFormat.textChoices
+            booleanAnswerPart.onCheckedChangeListener = { _, _ -> footer.canContinue = isValidInput() }
+            booleanAnswerPart.selected = selected.toSelectedTextChoice(answerFormat)
+        }
     }
 
     //endregion
