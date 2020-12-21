@@ -1,7 +1,6 @@
 package com.quickbirdstudios.surveykit.survey
 
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.LifecycleOwner
 import com.quickbirdstudios.surveykit.FinishReason
 import com.quickbirdstudios.surveykit.SurveyTheme
 import com.quickbirdstudios.surveykit.services.localization.LocalizationService
@@ -21,7 +20,6 @@ internal interface Survey {
         taskNavigator: TaskNavigator,
         surveyTheme: SurveyTheme,
         isRestarting: Boolean,
-        lifecycleOwner: LifecycleOwner,
         imageLoaderService: ImageLoaderService,
         localizationService: LocalizationService,
         networkService: NetworkService

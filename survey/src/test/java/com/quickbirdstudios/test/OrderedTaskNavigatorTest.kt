@@ -48,6 +48,7 @@ internal class OrderedTaskNavigatorTest {
     private fun randomQuestionStep() = QuestionStep(
         title = "title",
         text = "text",
-        answerFormat = AnswerFormat.TextAnswerFormat(maxLines = 1)
+        answerFormat = AnswerFormat.TextAnswerFormat(maxLines = 1),
+        uuid = "uuid"
     )
 }
