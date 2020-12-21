@@ -15,7 +15,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="@dimen/question_vertical_padding"
         android:layout_marginVertical="@dimen/button_padding_vertical"
-        android:elevation="10dp"
+        android:elevation="@dimen/button_elevation"
         android:stateListAnimator="@null"
         android:textColor="@android:color/white"
         tools:text="Weiter" />
@@ -28,7 +28,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="@dimen/question_vertical_padding"
         android:layout_marginVertical="@dimen/button_padding_vertical"
-        android:elevation="10dp"
+        android:elevation="@dimen/button_elevation"
         android:stateListAnimator="@null"
         tools:text="Frage überspringen" />
 

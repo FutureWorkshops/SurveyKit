@@ -28,4 +28,5 @@
     <dimen name="medium_title">24sp</dimen>
 
     <dimen name="form_view_vertical_margin">10dp</dimen>
+    <dimen name="button_elevation">8dp</dimen>
 </resources>
