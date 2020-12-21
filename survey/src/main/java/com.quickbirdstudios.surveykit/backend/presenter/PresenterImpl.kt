@@ -3,6 +3,7 @@ package com.quickbirdstudios.surveykit.backend.presenter
 import android.content.Context
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
 import androidx.lifecycle.LifecycleOwner
 import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.StepIdentifier
@@ -104,13 +105,10 @@ internal class PresenterImpl(
     private fun showView(questionView: StepView, transition: Presenter.Transition) {
         currentQuestionView = questionView
 
-        val transaction = fragmentManager
-            .beginTransaction()
+        fragmentManager.commit {
+            questionView.setupSurveyTheme(surveyTheme)
+            questionView.setupToolbarFunction(setUpToolbar)
 
-        questionView.setupSurveyTheme(surveyTheme)
-        questionView.setupToolbarFunction(setUpToolbar)
-
-        transaction.apply {
             when (transition) {
                 Presenter.Transition.SlideFromRight -> setCustomAnimations(
                     R.anim.enter_from_right,
@@ -123,7 +121,6 @@ internal class PresenterImpl(
                 Presenter.Transition.None -> Unit
             }
             replace(R.id.fragmentContainer, currentQuestionView!!)
-            commit()
         }
     }
 
