@@ -16,7 +16,6 @@ import com.quickbirdstudios.surveykit.AnswerFormat.TextAnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.TimeAnswerFormat
 import com.quickbirdstudios.surveykit.AnswerFormat.ValuePickerAnswerFormat
 import com.quickbirdstudios.surveykit.StepIdentifier
-import com.quickbirdstudios.surveykit.backend.views.listeners.location.LocationFragmentListener
 import com.quickbirdstudios.surveykit.backend.views.questions.BooleanQuestionView
 import com.quickbirdstudios.surveykit.backend.views.questions.CurrencyView
 import com.quickbirdstudios.surveykit.backend.views.questions.DatePickerQuestionView
@@ -45,14 +44,12 @@ import com.quickbirdstudios.surveykit.result.question_results.TextQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.TimeQuestionResult
 import com.quickbirdstudios.surveykit.result.question_results.ValuePickerQuestionResult
 import com.quickbirdstudios.surveykit.services.MobileWorkflowServices
-import java.io.IOException
 
 class QuestionStep(
     val title: String?,
     val text: String,
     val nextButton: String = "Next",
     val answerFormat: AnswerFormat,
-    val locationFragmentListener: LocationFragmentListener? = null,
     override var isOptional: Boolean = false,
     override val id: StepIdentifier = StepIdentifier(),
     override val uuid: String
@@ -260,9 +257,7 @@ class QuestionStep(
             text = mobileWorkflowServices.localizationService.getTranslation(text),
             isOptional = isOptional,
             nextButtonText = mobileWorkflowServices.localizationService.getTranslation(nextButton),
-            preselected = stepResult.toSpecificResult(),
-            locationFragmentListener = locationFragmentListener
-                ?: throw IOException("LocationFragmentListener shouldn't be null for creating a LocationView")
+            preselected = stepResult.toSpecificResult()
         )
 
     private fun createCurrencyQuestion(

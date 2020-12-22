@@ -1,21 +1,26 @@
 package com.quickbirdstudios.surveykit.backend.views.questions
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Geocoder
+import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.quickbirdstudios.surveykit.R
 import com.quickbirdstudios.surveykit.StepIdentifier
 import com.quickbirdstudios.surveykit.backend.views.listeners.location.Location
-import com.quickbirdstudios.surveykit.backend.views.listeners.location.LocationFragmentListener
-import com.quickbirdstudios.surveykit.backend.views.listeners.location.LocationViewListener
 import com.quickbirdstudios.surveykit.backend.views.question_parts.LocationPart
 import com.quickbirdstudios.surveykit.backend.views.step.QuestionView
 import com.quickbirdstudios.surveykit.result.QuestionResult
@@ -23,16 +28,17 @@ import com.quickbirdstudios.surveykit.result.question_results.LocationResult
 import kotlinx.android.synthetic.main.location_step.view.*
 import java.util.*
 
+private const val LOCATION_PERMISSION_RESULT = 9999
+
 internal class LocationView(
     id: StepIdentifier,
     isOptional: Boolean,
     title: String,
     text: String,
     nextButtonText: String,
-    private val preselected: LocationResult?,
-    private val locationFragmentListener: LocationFragmentListener
+    private val preselected: LocationResult?
 ) : QuestionView(id, isOptional, title, text, nextButtonText),
-    LocationViewListener {
+    OnMapReadyCallback {
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var geocoder: Geocoder
@@ -49,7 +55,7 @@ internal class LocationView(
     }
 
     override fun createResults(): QuestionResult {
-        locationFragmentListener.clearMapView()
+        clearMapView()
         return LocationResult(
             stringIdentifier = location?.address ?: "",
             id = id,
@@ -82,7 +88,7 @@ internal class LocationView(
                 }
 
                 content.add(this)
-                locationFragmentListener.setUpMapView(view.mapView, this@LocationView)
+                setUpMapView(view.mapView)
             }
         }
     }
@@ -93,21 +99,8 @@ internal class LocationView(
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    override fun onMapReady(map: GoogleMap) {
-        this.map = map
-        locationFragmentListener.checkLocationPermission()
-
-        if (preselected?.isValidResult() == true) {
-            moveCameraAndAddMarker(
-                preselected.latitude!!,
-                preselected.longitude!!,
-                preselected.address!!
-            )
-        }
-    }
-
     @SuppressLint("MissingPermission")
-    override fun onLocationPermissionGranted() {
+    private fun onLocationPermissionGranted() {
         map?.isMyLocationEnabled = true
         map?.setOnMyLocationButtonClickListener {
             getDeviceLocation()
@@ -169,5 +162,109 @@ internal class LocationView(
             Toast.makeText(context, "No results for this address", Toast.LENGTH_LONG).show()
         }
     }
+
+
+    // region Location variables
+    private var mapView: MapView? = null
+    // endregion
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            LOCATION_PERMISSION_RESULT -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    checkLocationPermission()
+                } else if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    context?.let {
+                        val string = getString(R.string.location_permission_denied_permanently)
+                        Toast.makeText(it, string, Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+            else -> {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            }
+        }
+    }
+
+    override fun onMapReady(map: GoogleMap) {
+        mapView?.onResume()
+        this.map = map
+        checkLocationPermission()
+
+        if (preselected?.isValidResult() == true) {
+            moveCameraAndAddMarker(
+                preselected.latitude!!,
+                preselected.longitude!!,
+                preselected.address!!
+            )
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mapView?.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView?.onResume()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mapView?.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mapView?.onStop()
+    }
+
+    override fun onPause() {
+        mapView?.onPause()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        mapView?.onDestroy()
+        super.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView?.onLowMemory()
+    }
+
+    // region LocationFragmentListener callbacks
+
+    private fun setUpMapView(mapView: MapView) {
+        this.mapView = mapView
+        mapView.onCreate(null)
+        mapView.getMapAsync(this)
+    }
+
+    private fun clearMapView() {
+        mapView = null
+    }
+
+    private fun checkLocationPermission() {
+        context?.let { safeContext ->
+            if (ActivityCompat.checkSelfPermission(
+                    safeContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_DENIED
+            ) {
+                requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_RESULT)
+            } else {
+                onLocationPermissionGranted()
+            }
+        }
+    }
+
+    // endregion
 
 }
